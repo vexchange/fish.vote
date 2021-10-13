@@ -1,16 +1,16 @@
 import axios from "axios"; // Requests
-import eth from "@state/eth"; // Chain state container
+import vechain from "@state/vechain"; // Vechain state container
 import { ethers } from "ethers"; // Ethers
-import UNIABI from "@utils/abi/uni"; // ABI: UNI Governance Token
+import VEXABI from "@utils/abi/vex"; // ABI: UNI Governance Token
 import { useState, useEffect } from "react"; // Local state management
-import { UNI_NETWORK } from "@utils/constants"; // Constants
+import { VEX_NETWORK } from "@utils/constants"; // Constants
 import { createContainer } from "unstated-next"; // Global state provider
 import CrowdProposalABI from "@utils/abi/CrowdProposal"; // ABI: CrowdProposal
 import CrowdProposalFactoryABI from "@utils/abi/CrowdProposalFactory"; // ABI: CrowdProposalFactory
 
 function useGovernance() {
   // Global state
-  const { address, provider } = eth.useContainer();
+  const { address, provider } = vechain.useContainer();
 
   // Contract state
   const [uniContract, setUniContract] = useState(null);
