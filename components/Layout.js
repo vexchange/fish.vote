@@ -116,12 +116,12 @@ function Meta({ proposal }) {
 
 function Header() {
   // Collect user balance
-  const { uni } = governance.useContainer();
+  const { vex } = governance.useContainer();
   // Collect auth status and functions
   const { address, unlock } = vechain.useContainer();
 
   /**
-   * Returns UNI balance for authenticated user
+   * Returns VEX balance for authenticated user
    * @returns {String}
    */
   const returnVoteCount = () => {
@@ -132,14 +132,14 @@ function Header() {
     };
 
     // When nil balance immediately show
-    if (uni === 0) {
-      return "0 UNI";
+    if (vex === 0) {
+      return "0 VEX";
     }
 
     // If votes loaded
-    return uni
+    return vex
       ? // Return formatted vote count
-        `${uni.toLocaleString("us-en", localeDecimals)} UNI`
+        `${vex.toLocaleString("us-en", localeDecimals)} VEX`
       : // Else, show loading status
         "Loading...";
   };

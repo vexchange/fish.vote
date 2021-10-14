@@ -3,12 +3,22 @@ import { ethers } from "ethers";
 // Declare constants by network
 const VEX_CONSTANTS = {
   mainnet: {
-
+    governor_alpha: {
+      name: "Governor",
+      address: "",
+    },
+    vex_governance_token: {
+      name: "VEX",
+      address: "",
+    },
+    timelock: {
+      name: "Timelock",
+      address: "",
+    },
   },
 
   // Effective contract addresses on the Vechain testnet
   testnet: {
-    minimum_vex: 0,
     governor_alpha: {
       name: "Governor",
       address: "0xc32e9418c019B87B691115Cc1acDf0c5318F5ea8",

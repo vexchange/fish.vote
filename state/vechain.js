@@ -1,37 +1,44 @@
-import { useState, useEffect } from "react"; // Local state management
+import { setState, useState, useEffect } from "react"; // Local state management
 import { createContainer } from "unstated-next"; // Global state provider
-
-// Onboarding wallet providers
-// To edit
-const wallets = [
-  { walletName: "Sync2" },
-
-];
+import assert from 'assert';
 
 function useVechain() {
   const [address, setAddress] = useState(null); // User address
-  const [onboard, setOnboard] = useState(null); // Onboard provider
-  const [provider, setProvider] = useState(null); // Ethers provider
+  const [provider, setProvider] = useState(null); // Vechain provider
 
   /**
-   * Unlock wallet, store ethers provider and address
+   * Unlock wallet, store vechain provider and address
    */
   const unlock = async () => {
-    // Enables wallet selection via BNC onboard
+    const WALLET_SIGN_MSG = {
+      purpose: 'identification',
+      payload: {
+        type: 'text',
+        content: 'Select account to sign onto site'
+      }
+    }
+
+    assert(provider !== undefined);
     
+    try {
+      const sign = provider.vendor.sign('cert', WALLET_SIGN_MSG);
+      const { annex } = await sign.request();
+      setAddress(annex.signer);
+    }
+    catch (error) {
+      console.error(error);
+    }
   };
 
   // --> Lifecycle: on mount
   useEffect(async () => {
     // Initialize the connex provider
-    const { Connex } = await import('@vechain/connex');      
-    const provider = new Connex({ 
+    const { Connex } = await import('@vechain/connex');
+    const connex = new Connex({ 
                             node: 'https://testnet.veblocks.net',
                             network: 'test'
                            })
-
-    console.log("Connex successfully initiated", provider);
-    
+    setProvider(connex);
   }, []);
 
   return {
