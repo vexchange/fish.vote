@@ -8,25 +8,34 @@ function useVechain() {
 
   /**
    * Unlock wallet, store vechain provider and address
+   * Sets address to null if wallet already connected
    */
   const unlock = async () => {
-    const WALLET_SIGN_MSG = {
-      purpose: 'identification',
-      payload: {
-        type: 'text',
-        content: 'Select account to sign onto site'
-      }
-    }
 
-    assert(provider !== undefined);
-    
-    try {
-      const sign = provider.vendor.sign('cert', WALLET_SIGN_MSG);
-      const { annex } = await sign.request();
-      setAddress(annex.signer);
+    // If already connected to wallet
+    if (address && provider) {
+      setAddress(null);
+      console.log(provider.vendor);
     }
-    catch (error) {
-      console.error(error);
+    else {
+      const WALLET_SIGN_MSG = {
+        purpose: 'identification',
+        payload: {
+          type: 'text',
+          content: 'Select account to sign onto site'
+        }
+      }
+
+      assert(provider !== undefined);
+
+      try {
+        const sign = provider.vendor.sign('cert', WALLET_SIGN_MSG);
+        const { annex } = await sign.request();
+        setAddress(annex.signer);
+      }
+      catch (error) {
+        console.error(error);
+      }
     }
   };
 

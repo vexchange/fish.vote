@@ -1,10 +1,12 @@
 import Head from "next/head"; // HTML head
 import Link from "next/link"; // Routing
+import Modal from "@components/Modal"; // Component: Modal
 import vechain from "@state/vechain"; // Vechain state container
 import governance from "@state/governance"; // Governance state container
 import NextNProgress from "nextjs-progressbar"; // Navigation progress bar
 import styles from "@styles/components/Layout.module.scss"; // Component styles
 import Jazzicon, { jsNumberForAddress } from "react-jazzicon"; // Address -> Avatar
+import {useState} from "react";
 
 export default function Layout({ children, short, proposal }) {
   return (
@@ -120,6 +122,11 @@ function Header() {
   // Collect auth status and functions
   const { address, unlock } = vechain.useContainer();
 
+  // Connect wallet modal
+  const [modalOpen, setModalOpen] = useState(false);
+  const onOpenModal = () => setModalOpen(true);
+  const onCloseModal = () => setModalOpen(false);
+
   /**
    * Returns VEX balance for authenticated user
    * @returns {String}
@@ -144,6 +151,12 @@ function Header() {
         "Loading...";
   };
 
+  const connectWalletWithLoading = async () => {
+      await unlock();
+
+      // Close modal after wallet connection, successful or not
+      setModalOpen(false);
+  }
   return (
     <div className={styles.layout__header}>
       {/* Logo */}
@@ -195,12 +208,18 @@ function Header() {
           // Unauthenticated state
           <button
             className={styles.layout__header_auth_connect}
-            onClick={unlock}
-          >
+            onClick={onOpenModal}>
             Connect wallet
           </button>
         )}
       </div>
+      <Modal open={modalOpen}
+             openHandler={setModalOpen}>
+        <div className={styles.card__modal}>
+            <h3>Sync 2</h3>
+            <button onClick={connectWalletWithLoading}>Sync 2</button>
+        </div>
+      </Modal>
     </div>
   );
 }
