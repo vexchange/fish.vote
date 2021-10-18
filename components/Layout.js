@@ -6,7 +6,7 @@ import governance from "@state/governance"; // Governance state container
 import NextNProgress from "nextjs-progressbar"; // Navigation progress bar
 import styles from "@styles/components/Layout.module.scss"; // Component styles
 import Jazzicon, { jsNumberForAddress } from "react-jazzicon"; // Address -> Avatar
-import {useState} from "react";
+import { useState } from "react";
 
 export default function Layout({ children, short, proposal }) {
   return (
