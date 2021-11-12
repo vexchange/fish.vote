@@ -26,7 +26,7 @@ function useGovernance() {
   /**
    * Collect user details
    */
-  const collectUser = async () => {
+  const collectUser = () => {
     collectVexBalance();
     collectDelegates();
     collectCurrentVotes();
