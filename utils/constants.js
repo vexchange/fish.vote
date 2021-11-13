@@ -15,6 +15,10 @@ const VEX_CONSTANTS = {
       name: "Timelock",
       address: "0x41D293Ee2924FF67Bd934fC092Be408162448f86",
     },
+    factory: {
+      name: "VexchangeV2Factory",
+      address: "0xb312582c023cc4938cf0faea2fd609b46d7509a2"
+    }
   },
   testnet: {
     governor_alpha: {
@@ -29,6 +33,10 @@ const VEX_CONSTANTS = {
       name: "Timelock",
       address: "0xFd883d0947848eeA79bA1425fcE38b6f00dF3ea0",
     },
+    factory: {
+      name: "VexchangeV2Factory",
+      address: "0xd15a91ee3f57313a6129a4a58c73fcbdad34c23c"
+    }
   }
 }
 
@@ -62,6 +70,24 @@ const VEX_ACTIONS = [
           },
         ],
       },
+      {
+        name: "approve",
+        signature: "approve(address,uint256)",
+        targets: [
+          {
+            name: "spender",
+            placeholder: "address",
+            type: "text"
+          }
+        ],
+        values: [
+          {
+            name: "amount",
+            placeholder: "amount",
+            type: "number"
+          }
+        ]
+      }
     ],
   },
   {
@@ -82,6 +108,54 @@ const VEX_ACTIONS = [
       },
     ],
   },
+  {
+    contract: "Factory",
+    address: VEX_NETWORK.factory.address,
+    functions: [
+      {
+        name: "Set platform fee to",
+        signature: "setPlatformFeeTo(address)",
+        targets: [
+          {
+            name: "platformFeeTo",
+            placeholder: "address",
+            type: "text"
+          }
+        ],
+        values: []
+      },
+      {
+        name: "Set default swap fee",
+        signature: "setDefaultSwapFee(uint256)",
+        targets: [],
+        values: [
+          {
+            name: "swapFee",
+            placeholder: "basis points",
+            type: "number"
+          }
+        ]
+      },
+      {
+        name: "Set default platform fee",
+        signature: "setDefaultPlatformFee(uint256)"
+      },
+      {
+        name: "Set default recoverer",
+        signature: "setDefaultRecoverer(address)"
+      },
+      {
+        name: "Set swap fee for pair",
+        signature: "setSwapFeeForPair(address,uint256)"
+      },
+      {
+        signature: "setPlatformFeeForPair(address,uint256)" 
+      },
+      {
+        signature: "setRecovererForPair(address,address)"
+      }
+    ]
+  }
 ];
 
 /**

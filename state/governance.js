@@ -269,7 +269,6 @@ function useGovernance() {
                                   .request();    
 
     const txVisitor = provider.thor.transaction(txResponse.txid);
-    console.log(txVisitor);
 
     // ticker object to track the creation of blocks on chain
     const ticker = provider.thor.ticker();
@@ -291,7 +290,7 @@ function useGovernance() {
     const proposalId = parseInt(txReceipt.outputs[0].events[0].data.substring(0,66));
 
     // Regenerate proposals
-    await collectProposals();
+    collectProposals();
 
     // Return proposal id
     return proposalId;
