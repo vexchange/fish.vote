@@ -55,38 +55,36 @@ const VEX_ACTIONS = [
       {
         name: "transfer",
         signature: "transfer(address,uint256)",
-        targets: [
+        args: [
           {
             name: "recipient",
             placeholder: "address",
             type: "text",
           },
-        ],
-        values: [
           {
             name: "amount",
             placeholder: "value",
             type: "number",
           },
         ],
+        values: [],
       },
       {
         name: "approve",
         signature: "approve(address,uint256)",
-        targets: [
+        args: [
           {
             name: "spender",
             placeholder: "address",
             type: "text"
-          }
-        ],
-        values: [
+          },
           {
             name: "amount",
             placeholder: "amount",
             type: "number"
           }
-        ]
+        ],
+        values: [],
       }
     ],
   },
@@ -97,7 +95,7 @@ const VEX_ACTIONS = [
       {
         name: "Set Pending Admin",
         signature: "setPendingAdmin(address)",
-        targets: [
+        args: [
           {
             name: "admin",
             placeholder: "address",
@@ -115,7 +113,7 @@ const VEX_ACTIONS = [
       {
         name: "Set platform fee to",
         signature: "setPlatformFeeTo(address)",
-        targets: [
+        args: [
           {
             name: "platformFeeTo",
             placeholder: "address",
@@ -127,32 +125,89 @@ const VEX_ACTIONS = [
       {
         name: "Set default swap fee",
         signature: "setDefaultSwapFee(uint256)",
-        targets: [],
-        values: [
+        args: [
           {
             name: "swapFee",
             placeholder: "basis points",
             type: "number"
           }
-        ]
+        ],
+        values: []
       },
       {
         name: "Set default platform fee",
-        signature: "setDefaultPlatformFee(uint256)"
+        signature: "setDefaultPlatformFee(uint256)",
+        args: [
+          {
+            name: "platformFee",
+            placeholder: "basis points",
+            type: "number"
+          }
+        ],
+        values: []
       },
       {
         name: "Set default recoverer",
-        signature: "setDefaultRecoverer(address)"
+        signature: "setDefaultRecoverer(address)",
+        args: [
+          {
+            name: "default recoverer",
+            placeholder: "address",
+            type: "text"
+          }
+        ],
+        values: []
       },
       {
         name: "Set swap fee for pair",
-        signature: "setSwapFeeForPair(address,uint256)"
+        signature: "setSwapFeeForPair(address,uint256)",
+        args: [
+          {
+            name: "pair",
+            placeholder: "address",
+            type: "text"
+          },
+          {
+            name: "swapFee",
+            placeholder: "basis points",
+            type: "number"
+          }
+        ],
+        values: []
       },
       {
-        signature: "setPlatformFeeForPair(address,uint256)" 
+        name: "Set platform fee for pair",
+        signature: "setPlatformFeeForPair(address,uint256)",
+        args: [
+          {
+            name: "pair",
+            placeholder: "address",
+            type: "text"
+          },
+          {
+            name: "platformFee",
+            placeholder: "basis points",
+            type: "number"
+          }
+        ],
+        values: []
       },
       {
-        signature: "setRecovererForPair(address,address)"
+        name: "Set recoverer for pair",
+        signature: "setRecovererForPair(address,address)",
+        args: [
+          {
+            name: "pair",
+            placeholder: "address",
+            type: "text"
+          },
+          {
+            name: "recoverer",
+            placeholder: "address",
+            type: "text"
+          }
+        ],
+        values: []
       }
     ]
   }
