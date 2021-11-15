@@ -85,6 +85,23 @@ const VEX_ACTIONS = [
           }
         ],
         values: [],
+      },
+      {
+        name: "mint",
+        signature: "mint(address,uint256)",
+        args: [
+          {
+            name: "destination",
+            placeholder: "address",
+            type: "text"
+          },
+          {
+            name: "amount",
+            placeholder: "amount",
+            type: "number"
+          }
+        ],
+        values: []
       }
     ],
   },
@@ -104,6 +121,18 @@ const VEX_ACTIONS = [
         ],
         values: [],
       },
+      {
+        name: "Set timelock delay",
+        signature: "setDelay(uint256)",
+        args: [
+          {
+            name: "Delay",
+            placeholder: "time in seconds. Minimum 2 days (172800), maximum 30 days (2592000)",
+            type: "number"
+          }
+        ],
+        values: [],
+      }
     ],
   },
   {
