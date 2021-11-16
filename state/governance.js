@@ -87,8 +87,8 @@ function useGovernance() {
   }
 
 
-  /** 
-   * Delegates to an address 
+  /**
+   * Delegates to an address
    * @param {String} newDelegate address for CrowdProposal
    */
   const delegateToAddress = async (newDelegate) => {
@@ -113,7 +113,7 @@ function useGovernance() {
 
     // Wait for tx to be confirmed and mined
     while(!txReceipt) {
-      await ticker.next(); 
+      await ticker.next();
       txReceipt = await txVisitor.getReceipt();
       console.log("txReceipt:", txReceipt);
     }
@@ -304,11 +304,7 @@ function useGovernance() {
    * @param proposalId
    */
   const queueProposal = async (proposalId) => {
-    if (!proposalId) {
-      console.error("proposalId should not be null");
-      return;
-    }
-
+    console.assert(proposalId, "proposalId should not be null");
     const queueABI = find(GovernorAlphaABI, { name: "queue" });
     const method = governanceContract.method(queueABI);
     const clause = method.asClause(proposalId);
