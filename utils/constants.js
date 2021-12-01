@@ -18,6 +18,10 @@ const VEX_CONSTANTS = {
     factory: {
       name: "VexchangeV2Factory",
       address: "0xb312582c023cc4938cf0faea2fd609b46d7509a2"
+    },
+    router: {
+      name: "Router",
+      address: "0x6c0a6e1d922e0e63901301573370b932ae20dadb",
     }
   },
   testnet: {
@@ -36,6 +40,10 @@ const VEX_CONSTANTS = {
     factory: {
       name: "VexchangeV2Factory",
       address: "0xd15a91ee3f57313a6129a4a58c73fcbdad34c23c"
+    },
+    router: {
+      name: "Router",
+      address: "0x01d6b50b31c18d7f81ede43935cadf79901b0ea0"
     }
   }
 }
@@ -234,6 +242,54 @@ const VEX_ACTIONS = [
             name: "recoverer",
             placeholder: "address",
             type: "text"
+          }
+        ],
+        values: []
+      }
+    ]
+  },
+  {
+    contract: "Router",
+    address: VEX_NETWORK.router.address,
+    functions: [
+      {
+        name: "Remove liquidity",
+        signature: "removeLiquidity(address,address,uint256,uint256,uint256,address,uint256)",
+        args: [
+          {
+            name: "tokenA",
+            placeholder: "address",
+            type: "text"
+          },
+          {
+            name: "tokenB",
+            placeholder: "address",
+            type: "text"
+          },
+          {
+            name: "liquidity",
+            placeholder: "number of LP tokens",
+            type: "number"
+          },
+          {
+            name: "amountAMin",
+            placeholder: "Amount A minimum",
+            type: "number"
+          },
+          {
+            name: "amountBMin",
+            placeholder: "Amount B minimum",
+            type: "number"
+          },
+          {
+            name: "to",
+            placeholder: "address",
+            type: "text"
+          },
+          {
+            name: "deadline",
+            placeholder: "timestamp",
+            type: "number"
           }
         ],
         values: []
