@@ -21,7 +21,7 @@ const defaultActionState = [
   null,
   // Function param
   null,
-  // Targets array
+  // Arguments array
   [],
   // Values array
   [],
@@ -33,7 +33,7 @@ export default function Create() {
 
   // Global state
   const { address, unlock } = vechain.useContainer();
-  const { createProposal, inifiniteApproveFactory } = governance.useContainer();
+  const { createProposal } = governance.useContainer();
 
   // Local state
   const [title, setTitle] = useState("");
@@ -66,7 +66,7 @@ export default function Create() {
 
     try {
       // Create proposal
-      const proposal_address = await createProposal(
+      const proposalId = await createProposal(
         actions.map((action) => action[0]),
         actions.map((action) => action[1]),
         actions.map((action) => action[2]),
@@ -75,7 +75,7 @@ export default function Create() {
         description
       );
       // Assuming proposal creation is successful, route to new proposal
-      router.push(`/proposal/${proposal_address}`);
+      router.push(`/proposal/${proposalId}`);
     } catch (error) {
       // Catch and log error
       console.log("Error when creating proposal: " + error);
@@ -171,9 +171,9 @@ export default function Create() {
               // Else, render paragraph
               <p>
                 After your proposal is created, it will appear at the bottom of
-                the New page. If it receives more than 400 delegate votes, your
-                proposal will appear on the Home page. You can terminate your
-                proposal at any time after creation.
+                the New page. A proposal needs at least 3M votes to reach quorum.
+                and be successful. A proposal can be terminated when the proposer's
+                votes fall below the proposal threshold.
               </p>
             )}
 
