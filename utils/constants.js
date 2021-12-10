@@ -293,6 +293,43 @@ const VEX_ACTIONS = [
           }
         ],
         values: []
+      },
+      {
+        name: "Remove liquidity VET",
+        signature: "removeLiquidity(address,uint256,uint256,uint256,address,uint256)",
+        args: [
+          {
+            name: "token",
+            placeholder: "address",
+            type: "text"
+          },
+          {
+            name: "liquidity",
+            placeholder: "number of LP tokens",
+            type: "number"
+          },
+          {
+            name: "amountTokenMin",
+            placeholder: "Token Amount Minimum",
+            type: "number"
+          },
+          {
+            name: "amountVetMin",
+            placeholder: "Amount of VET minimum",
+            type: "number"
+          },
+          {
+            name: "to",
+            placeholder: "address",
+            type: "text"
+          },
+          {
+            name: "deadline",
+            placeholder: "timestamp",
+            type: "number"
+          }
+        ],
+        values: []
       }
     ]
   }
