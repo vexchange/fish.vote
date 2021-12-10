@@ -61,7 +61,7 @@ const VEX_ACTIONS = [
     address: VEX_NETWORK.vex_governance_token.address,
     functions: [
       {
-        name: "transfer",
+        name: "Transfer",
         signature: "transfer(address,uint256)",
         args: [
           {
@@ -78,7 +78,7 @@ const VEX_ACTIONS = [
         values: [],
       },
       {
-        name: "approve",
+        name: "Approve",
         signature: "approve(address,uint256)",
         args: [
           {
@@ -95,7 +95,7 @@ const VEX_ACTIONS = [
         values: [],
       },
       {
-        name: "mint",
+        name: "Mint",
         signature: "mint(address,uint256)",
         args: [
           {
@@ -107,6 +107,30 @@ const VEX_ACTIONS = [
             name: "amount",
             placeholder: "amount",
             type: "number"
+          }
+        ],
+        values: []
+      },
+      {
+        name: "Burn",
+        signature: "burn(uint256)",
+        args: [
+          {
+            name: "rawAmount",
+            placeholder: "amount",
+            type: "number"
+          }
+        ],
+        values: []
+      },
+      {
+        name: "Set Minter",
+        signature: "setMinter(address)",
+        args: [
+          {
+            name: "newMinter",
+            placeholder: "address",
+            type: "text"
           }
         ],
         values: []
