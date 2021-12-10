@@ -124,7 +124,7 @@ const VEX_ACTIONS = [
         values: []
       },
       {
-        name: "Set Minter",
+        name: "Set minter",
         signature: "setMinter(address)",
         args: [
           {
@@ -142,7 +142,7 @@ const VEX_ACTIONS = [
     address: VEX_NETWORK.timelock.address,
     functions: [
       {
-        name: "Set Pending Admin",
+        name: "Set pending admin",
         signature: "setPendingAdmin(address)",
         args: [
           {
