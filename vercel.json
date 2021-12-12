@@ -1,6 +1,6 @@
 {
    "functions": {
-     "pages/api/pools/**/*.js": {
+     "pages/**/*.js": {
        "memory": 3008,
        "maxDuration": 30
      }
