@@ -153,11 +153,11 @@ const Action = ({ onChangeHandler, index }) => {
                 <Spacer height="20" />
                 <ActionInput
                   key={uniqueId('select_')}
-                  labelTitle={target.name}
-                  value={targets[i]}
-                  type={target.type}
-                  placeholder={target.placeholder}
-                  onChangeHandler={updateTargetsAtIndex}
+                  labelTitle={arg.name}
+                  value={args[i]}
+                  type={arg.type}
+                  placeholder={arg.placeholder}
+                  onChangeHandler={updateArgsAtIndex}
                   onChangeIndex={i}
                 />
               </React.Fragment>
