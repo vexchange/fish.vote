@@ -153,7 +153,7 @@ const Action = ({ onChangeHandler, index }) => {
                 <Spacer height="20" />
                 <ActionInput
                   key={uniqueId('select_')}
-                  labelTitle={arg.name}
+                  label={arg.name}
                   value={args[i]}
                   type={arg.type}
                   placeholder={arg.placeholder}
@@ -173,7 +173,7 @@ const Action = ({ onChangeHandler, index }) => {
                   <Spacer height="20" />
                   <ActionInput
                     key={i}
-                    labelTitle={value.name}
+                    label={value.name}
                     value={values[i]}
                     type={value.type}
                     placeholder={value.placeholder}
