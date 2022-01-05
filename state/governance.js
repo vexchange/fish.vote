@@ -381,6 +381,41 @@ function useGovernance() {
     await collectProposals();
   }
 
+  const executeProposal = async (proposalId) => {
+    if (!proposalId) {
+      console.error("proposalId should not be null");
+      return;
+    }
+
+    const executeABI = find(GovernorAlphaABI, { name: "execute" });
+    const method = governanceContract.method(executeABI);
+    const clause = method.asClause(proposalId);
+    const txResponse = await provider.vendor.sign('tx', [clause])
+                              .signer(address) // This modifier really necessary?
+                              .comment("Sign to execute proposal " + proposalId)
+                              .request();
+
+    const txVisitor = provider.thor.transaction(txResponse.txid);
+    let txReceipt = null;
+    const ticker = provider.thor.ticker();
+
+    // Wait for tx to be confirmed and mined
+    while(!txReceipt) {
+      await ticker.next();
+      txReceipt = await txVisitor.getReceipt();
+      console.log("txReceipt:", txReceipt);
+    }
+
+    // Handle failed tx
+    if (txReceipt.reverted) {
+      console.error("Executing proposal failed");
+      return;
+    }
+
+    // Regenerate proposals
+    await collectProposals();
+  }
+
   const collectProposals = async () => {
     // Toggle loading
     setLoadingProposals(true);
@@ -499,6 +534,7 @@ function useGovernance() {
     loadingProposals,
     createProposal,
     queueProposal,
+    executeProposal,
     collectProposalById,
     delegateToAddress,
     castVote,

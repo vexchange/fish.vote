@@ -37,6 +37,7 @@ const Proposal = ({ id, defaultProposalData }) => {
     collectProposalById,
     castVote,
     queueProposal,
+    executeProposal,
     getEta
   } = governance.useContainer();
   const { address: authed, unlock } = vechain.useContainer();
@@ -72,6 +73,9 @@ const Proposal = ({ id, defaultProposalData }) => {
     }
   }
 
+  console.log("receipt, ",receipt)
+  console.log("data",data)
+
   /**
    * Casts the vote on GovernorAlpha 
    * on the blockchain
@@ -106,10 +110,18 @@ const Proposal = ({ id, defaultProposalData }) => {
   };
   
   /**
-   * Queues the contract for later execution
-   * Only applies to contract in the succeeded state
+   * Executes the contract
+   * Only applies to contract in the queued state and ETA passed
    */ 
-  const executeWithLoading = async () => {};
+  const executeWithLoading = async () => {
+    setButtonLoading(true);
+    try {
+      await executeProposal(id);
+    } catch (error) {
+      console.error("Error when executing", error);
+    }
+    setButtonLoading(false);
+  };
 
   /**
    * Support action button rendering
