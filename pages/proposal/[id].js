@@ -36,7 +36,8 @@ const Proposal = ({ id, defaultProposalData }) => {
     getReceipt,
     collectProposalById,
     castVote,
-    queueProposal
+    queueProposal,
+    getEta
   } = governance.useContainer();
   const { address: authed, unlock } = vechain.useContainer();
 
@@ -46,7 +47,7 @@ const Proposal = ({ id, defaultProposalData }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [voteFor, setVoteFor] = useState(true);
   const [receipt, setReceipt] = useState(null);
-  console.log(voteFor);
+  const [eta, setEta] = useState(null)
 
   /**
    * Fetch proposal details
@@ -59,6 +60,9 @@ const Proposal = ({ id, defaultProposalData }) => {
     }
 
     setData(proposal.data);
+    if (proposal.data.state === "Queued") { 
+      setEta(await getEta(data.id))
+    }
   };
 
   const fetchReceipt = async () => {
@@ -172,16 +176,18 @@ const Proposal = ({ id, defaultProposalData }) => {
     }  
     // If proposal is in a queued state
     else if (data.state === "Queued") {
-      if (authed) {
-        // TODO: Check if eta has arrived
-        // actions.name = "Execute Proposal";
-        // actions.handler = () => executeWithLoading();
-        // actions.disabled = false;
-        
-        // If not, show that not yet ETA and disable action
-        // actions.name = "Not yet ETA";
-        // actions.handler = () => null;
-        // actions.disabled = true;
+      if (authed && eta) {
+        //ETA has arrived, execute proposal possible
+        if (+eta * 1000 < Date.now()) {
+          actions.name = "Execute Proposal";
+          actions.handler = () => executeWithLoading();
+          actions.disabled = false;
+        } else {   
+        //ETA not yet, disable action
+        actions.name = "Not yet ETA";
+        actions.handler = () => null;
+        actions.disabled = true;
+        }
       }
       else {
         actions.name = "Connect wallet";

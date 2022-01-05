@@ -91,6 +91,21 @@ function useGovernance() {
     return receipt;
   }
 
+  /**
+   * Obtains the eta for a proposal after it was queued
+   * @param {string} proposalId of the proposal of interest
+   * @returns {eta} 
+   */
+  const getEta = async (proposalId) => {
+    // Filter for all ProposalQueued events
+    const proposalQueuedABI = find(GovernorAlphaABI, {name: 'ProposalQueued' });
+    const proposalQueuedEvent = governanceContract.event(proposalQueuedABI);
+    const filter = proposalQueuedEvent.filter([{}]);
+    const events = await filter.apply(0, 20);
+    const eventById = events.find(e => e.decoded.id === proposalId)
+    return eventById.decoded.eta;
+  }
+
 
   /** 
    * Delegates to an address 
@@ -480,6 +495,7 @@ function useGovernance() {
     currentVotes,
     proposals,
     getReceipt,
+    getEta,
     loadingProposals,
     createProposal,
     queueProposal,
