@@ -196,7 +196,7 @@ const Proposal = ({ id, defaultProposalData }) => {
           actions.disabled = false;
         } else {   
         //ETA not yet, disable action
-        actions.name = "Not yet ETA";
+        actions.name = "Timelock Pending";
         actions.handler = () => null;
         actions.disabled = true;
         }
