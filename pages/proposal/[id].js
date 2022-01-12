@@ -73,9 +73,6 @@ const Proposal = ({ id, defaultProposalData }) => {
     }
   }
 
-  console.log("receipt, ",receipt)
-  console.log("data",data)
-
   /**
    * Casts the vote on GovernorAlpha 
    * on the blockchain
@@ -196,9 +193,9 @@ const Proposal = ({ id, defaultProposalData }) => {
           actions.disabled = false;
         } else {   
         //ETA not yet, disable action
-        actions.name = "Timelock Pending";
-        actions.handler = () => null;
-        actions.disabled = true;
+          actions.name = "Timelock Pending";
+          actions.handler = () => null;
+          actions.disabled = true;
         }
       }
       else {
