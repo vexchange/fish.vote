@@ -16,7 +16,6 @@ import Input from "@components/Input";
 import Layout from "@components/Layout";
 import Loader from "@components/Loader";
 import Switch from "@components/Switch";
-import { PROPOSAL_THRESHOLD } from "@utils/constants";
 
 export default function Home() {
   const router = useRouter();
@@ -28,12 +27,7 @@ export default function Home() {
   // Local state 
   const [delegateInput, setDelegateInput] = useState("");
   const [inputVisible, setInputVisible] = useState(false);
-  const [allowProposal, setAllowProposal] = useState(false);
-
-  useEffect(async () => {
-      setAllowProposal(currentVotes >= PROPOSAL_THRESHOLD);
-  }, [currentVotes]);
-
+ 
   /**
    * Routes clicker to /create
    * @param {MouseEvent} e event to track
@@ -206,7 +200,7 @@ export default function Home() {
       <Card
         noPadding
         title="Top proposals"
-        action={{ name: "Create Proposal", handler: routeToCreate, disabled: !allowProposal }}
+        action={{ name: "Create Proposal", handler: routeToCreate }}
       >
         {loadingProposals ? (
           <Loader />

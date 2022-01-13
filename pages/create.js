@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { isMobile } from 'react-device-detect';
@@ -16,12 +16,14 @@ import Action from "@components/Action";
 import Layout from "@components/Layout";
 import Breadcrumb from "@components/Breadcrumb";
 
+import { PROPOSAL_THRESHOLD } from "@utils/constants";
+
 const defaultActionState = [null, null, [], []];
 
 export default function Create() {
   const router = useRouter();
   const { address, unlock } = vechain.useContainer();
-  const { createProposal } = governance.useContainer();
+  const { createProposal, currentVotes } = governance.useContainer();
 
   // Local state
   const [title, setTitle] = useState("");
@@ -31,6 +33,12 @@ export default function Create() {
   const [actions, setActions] = useState(
     [defaultActionState]
   );
+
+  const [allowProposal, setAllowProposal] = useState(false);
+
+  useEffect(async () => {
+      setAllowProposal(currentVotes >= PROPOSAL_THRESHOLD);
+  }, [currentVotes]);
 
   /**
    * Update actions array at index
@@ -154,7 +162,7 @@ export default function Create() {
               {address ? (
                 <Button
                   onClick={createProposalWithLoading}
-                  disabled={buttonLoading}
+                  disabled={buttonLoading || !allowProposal}
                 >
                   {buttonLoading ? "Submitting Proposal..." : "Submit Proposal"}
                 </Button>
