@@ -1,10 +1,10 @@
 import { Wrapper, Title } from './styled'
 
-const SuccessToast = ({ description }) => (
+const ErrorToast = ({ description }) => (
   <Wrapper>
     <Title>Something went wrong</Title>
     { description ? <div>{ description }</div> : null }
   </Wrapper>
 )
 
-export default SuccessToast;
+export default ErrorToast;
