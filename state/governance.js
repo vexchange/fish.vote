@@ -98,6 +98,8 @@ function useGovernance() {
    */
   const getEta = async (proposalId) => {
     // Filter for all ProposalQueued events
+    if (governanceContract === null) return '';
+
     const proposalQueuedABI = find(GovernorAlphaABI, {name: 'ProposalQueued' });
     const proposalQueuedEvent = governanceContract.event(proposalQueuedABI);
     const filter = proposalQueuedEvent.filter([{}]);

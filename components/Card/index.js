@@ -1,3 +1,6 @@
+import { useMemo } from 'react'
+import { Tooltip } from 'react-tippy';
+
 import {
   Header,
   Title,
@@ -6,6 +9,8 @@ import {
 } from './styled';
 
 import Button from '../Button'
+
+const disabledOptions = ['Connect wallet']
 
 const Card = ({
   action: {
@@ -23,6 +28,17 @@ const Card = ({
   title,
   noPadding,
 }) => {
+  const getContent = useMemo(() => {
+    switch (name) {
+      case 'Timelock Pending':
+        return 'Timelock has a 2 day delay'
+      case 'Create Proposal':
+        return 'Ensure you have at least 100,000 VEX to create a proposal'
+      default:
+        return ''
+    }
+  }, [name])
+
   return (
     <Wrapper shortMargin={shortMargin} noPadding={noPadding}>
       { title ? (
@@ -31,25 +47,35 @@ const Card = ({
             {title}
           </Title>
           <div>
-            
             { subtitle ? <Subtitle>{ subtitle }</Subtitle> : null}
-            { name && handler ? (
-              <Button
-                onClick={handler}
-                background={background ? background : null}
-                color={color ? color : null}
-                disabled={disabled || loading}
+            { name ? (
+              <Tooltip
+                interactive
+                useContext
+                distance={20}
+                position='top'
+                trigger='mouseenter'
+                disabled={disabledOptions.includes(name)}
+                html={(
+                  <div>{ getContent }</div>
+                )}
               >
-                {!loading ? name : loadingText}
-              </Button>
+                <Button
+                  onClick={handler}
+                  background={background ? background : null}
+                  color={color ? color : null}
+                  disabled={disabled || loading}
+                >
+                  {!loading ? name : loadingText}
+                </Button>
+              </Tooltip>
             ) : null}
           </div>
         </Header>
       ) : null}
-      
       <div>{children}</div>
     </Wrapper>
-  );
+  )
 }
 
 export default Card;

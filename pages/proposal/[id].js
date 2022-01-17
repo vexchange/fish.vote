@@ -228,7 +228,7 @@ const Proposal = ({ id, defaultProposalData }) => {
         handler: () => null,
         disabled: true,
         color: '#fc0a54',
-        background: "#fc0a54",
+        background: "#2D0D16",
       }
     }
 
