@@ -10,7 +10,7 @@ import {
 
 import Button from '../Button'
 
-const disabledOptions = ['Connect wallet']
+const disabledOptions = ['Connect wallet', 'Create Proposal']
 
 const Card = ({
   action: {
@@ -32,8 +32,6 @@ const Card = ({
     switch (name) {
       case 'Timelock Pending':
         return 'Timelock has a 2 day delay'
-      case 'Create Proposal':
-        return 'Ensure you have at least 100,000 VEX to create a proposal'
       default:
         return ''
     }

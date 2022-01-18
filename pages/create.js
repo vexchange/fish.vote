@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { isMobile } from 'react-device-detect';
+import { Tooltip } from 'react-tippy';
 
 import vechain from "@state/vechain";
 import governance from "@state/governance";
@@ -143,7 +144,7 @@ export default function Create() {
                 </Button>
               </Add>
             ) : null}
-            
+
           </Card>
 
           <Card title="Submit your proposal">
@@ -160,15 +161,26 @@ export default function Create() {
               )}
 
               {address ? (
-                <Button
-                  onClick={createProposalWithLoading}
-                  disabled={buttonLoading || !allowProposal}
+                <Tooltip
+                  interactive
+                  useContext
+                  distance={20}
+                  position='top'
+                  trigger='mouseenter'
+                  title="Ensure you have at least 100,000 VEX to submit a proposal"
                 >
-                  {buttonLoading ? "Submitting Proposal..." : "Submit Proposal"}
-                </Button>
+
+                  <Button
+                    onClick={createProposalWithLoading}
+                    disabled={buttonLoading || !allowProposal}
+                  >
+                    {buttonLoading ? "Submitting Proposal..." : "Submit Proposal"}
+                  </Button>
+                </Tooltip>
               ) : (
                 <Button onClick={unlock}>Connect wallet</Button>
               )}
+
             </Submit>
           </Card>
         </>
