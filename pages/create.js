@@ -168,7 +168,7 @@ export default function Create() {
                   position='top'
                   trigger='mouseenter'
                   disabled={currentVotes > PROPOSAL_THRESHOLD}
-                  title="Ensure you have at least 100,000 VEX to submit a proposal"
+                  title="Ensure you have at least 100,000 Votes to submit a proposal"
                 >
 
                   <Button
