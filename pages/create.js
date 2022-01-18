@@ -167,6 +167,7 @@ export default function Create() {
                   distance={20}
                   position='top'
                   trigger='mouseenter'
+                  disabled={currentVotes > PROPOSAL_THRESHOLD}
                   title="Ensure you have at least 100,000 VEX to submit a proposal"
                 >
 
