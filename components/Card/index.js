@@ -10,8 +10,6 @@ import {
 
 import Button from '../Button'
 
-const disabledOptions = ['Connect wallet', 'Create Proposal']
-
 const Card = ({
   action: {
     name = null,
@@ -19,6 +17,7 @@ const Card = ({
     disabled = false,
     loading = false,
     loadingText = "",
+    tooltipText = "",
     background = null,
     color = null,
   } = {},
@@ -28,14 +27,6 @@ const Card = ({
   title,
   noPadding,
 }) => {
-  const getContent = useMemo(() => {
-    switch (name) {
-      case 'Timelock Pending':
-        return 'Timelock has a 2 day delay'
-      default:
-        return ''
-    }
-  }, [name])
 
   return (
     <Wrapper shortMargin={shortMargin} noPadding={noPadding}>
@@ -53,9 +44,9 @@ const Card = ({
                 distance={20}
                 position='top'
                 trigger='mouseenter'
-                disabled={disabledOptions.includes(name)}
+                disabled={tooltipText === ''}
                 html={(
-                  <div>{ getContent }</div>
+                  <div>{ tooltipText }</div>
                 )}
               >
                 <Button
