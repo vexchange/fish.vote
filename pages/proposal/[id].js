@@ -191,7 +191,8 @@ const Proposal = ({ id, defaultProposalData }) => {
           actions.name = "Execute Proposal";
           actions.handler = () => executeWithLoading();
           actions.disabled = false;
-        } else {   
+        } 
+        else {   
         //ETA not yet, disable action
           const waitHours = Math.ceil((+eta * 1000 - Date.now()) / 3600000)
           actions.name = "Timelock Pending";
