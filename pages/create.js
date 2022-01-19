@@ -56,7 +56,6 @@ export default function Create() {
    * Submit proposal creation with button loading toggle
    */
   const createProposalWithLoading = async () => {
-    setButtonLoading(true);
 
     try {
       // Create proposal
@@ -74,7 +73,6 @@ export default function Create() {
       console.log("Error when creating proposal: " + error);
     }
 
-    setButtonLoading(false);
   };
 
   return (
@@ -149,16 +147,12 @@ export default function Create() {
 
           <Card title="Submit your proposal">
             <Submit>
-              {buttonLoading ? (
-                <Loader />
-              ) : (
-                <p>
-                  After your proposal is created, it will appear at the bottom of
-                  the New page. If it receives more than 400 delegate votes, your
-                  proposal will appear on the Home page. You can terminate your
-                  proposal at any time after creation.
-                </p>
-              )}
+              <p>
+                After your proposal is created, it will appear at the bottom of
+                the New page. If it receives more than 400 delegate votes, your
+                proposal will appear on the Home page. You can terminate your
+                proposal at any time after creation.
+              </p>
 
               {address ? (
                 <Tooltip
