@@ -64,7 +64,6 @@ const Proposal = ({ id, defaultProposalData }) => {
     }
 
     setData(proposal.data);
-    console.log("fetchproposal", proposal.data)
     if (proposal.data.state === "Queued") {
       setEta(await getEta(data.id))
     }
@@ -89,8 +88,6 @@ const Proposal = ({ id, defaultProposalData }) => {
       const stateABI = find(GovernorAlphaABI, {name:'state'});
       const stateMethod = govAlphaContract.method(stateABI);
       const proposalStateRaw = (await stateMethod.call(id)).decoded[0];
-
-      console.log(proposal);
 
       setData((oldData) => {
         return {
@@ -434,7 +431,6 @@ export async function getServerSideProps({ params: { id } }) {
     };
   }
 
-  console.log("SSP", allProposals);
   // Else, return retrieved content
   return {
     // As prop
