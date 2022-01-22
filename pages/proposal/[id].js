@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import gfm from "remark-gfm";
 import ReactMarkdown from "react-markdown";
 import Head from "next/head";
-import { useRouter } from "next/router";
 import {find, uniqueId} from "lodash";
 
 import vechain from "@state/vechain";
@@ -26,18 +25,14 @@ import { Content } from "@components/Card/styled";
 import GovernorAlphaABI from "@utils/abi/GovernorAlpha";
 import {formatEther} from "ethers/lib/utils";
 import toProposalState from "@utils/ProposalState";
-import {governorAlphaContract} from "@utils/globals";
 
 const Proposal = ({ id, defaultProposalData }) => {
-  // Routing
-  const router = useRouter();
 
   // Global state
   const {
     currentVotes,
     proposals,
     getReceipt,
-    collectProposalById,
     castVote,
     queueProposal,
     executeProposal,
@@ -56,15 +51,8 @@ const Proposal = ({ id, defaultProposalData }) => {
   /**
    * Fetch proposal details
    */
-  const fetchProposal = async () => {
-    const proposal = await collectProposalById(id);
-
-    if (!proposal.success) {
-      await router.push("/");
-    }
-
-    setData(proposal.data);
-    if (proposal.data.state === "Queued") {
+  const fetchETAForQueued = async () => {
+    if (data.state === "Queued") {
       setEta(await getEta(data.id))
     }
   };
@@ -284,7 +272,7 @@ const Proposal = ({ id, defaultProposalData }) => {
   };
 
   useEffect(refreshVotesAndState, [tick]);
-  useEffect(fetchProposal, [proposals]);
+  useEffect(fetchETAForQueued, [proposals]);
   useEffect(fetchReceipt, [authed, data]);
 
   return (
