@@ -48,9 +48,6 @@ const Proposal = ({ id, defaultProposalData }) => {
   const [receipt, setReceipt] = useState(null);
   const [eta, setEta] = useState(null)
 
-  /**
-   * Fetch proposal details
-   */
   const fetchETAForQueued = async () => {
     if (data.state === "Queued") {
       setEta(await getEta(data.id))
