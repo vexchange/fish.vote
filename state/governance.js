@@ -13,7 +13,6 @@ import GovernorAlphaABI from "@utils/abi/GovernorAlpha";
 import ErrorToast from "@components/ErrorToast";
 import SuccessToast from "@components/SuccessToast";
 import PendingToast from "@components/PendingToast";
-import { waitForNumBlocks } from "@utils/functions";
 
 function useGovernance() {
   // Global state
@@ -197,8 +196,6 @@ function useGovernance() {
       await ticker.next();
       txReceipt = await txVisitor.getReceipt();
     }
-
-    await waitForNumBlocks(ticker, 2);
 
     if (!txReceipt.reverted) {
       toast.update(toastID, {
