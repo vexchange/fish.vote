@@ -4,16 +4,5 @@
        "memory": 3008,
        "maxDuration": 30
      }
-   },
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers" : [
-        {
-          "key" : "Cache-Control",
-          "value" : "no-store, no-cache, max-age=0, must-revalidate"
-        }
-      ]
-    }
-  ]
+   }
 }
