@@ -90,7 +90,6 @@ export const collectProposals = async () => {
     // Might want to filter out other categories of proposals too
     .filter((proposal) => proposal.state !== "Canceled");
 
-  console.log("backend api", proposals);
   return [...proposals];
 };
 

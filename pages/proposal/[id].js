@@ -3,12 +3,12 @@ import gfm from "remark-gfm";
 import ReactMarkdown from "react-markdown";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { uniqueId } from "lodash";
+import {find, uniqueId} from "lodash";
 
 import vechain from "@state/vechain";
 import governance from "@state/governance";
 
-import { collectNameByContract, generateActionSignatureHTML } from "@utils/constants";
+import {collectNameByContract, generateActionSignatureHTML, VEX_NETWORK} from "@utils/constants";
 
 import { collectProposals } from "pages/api/proposals";
 
@@ -23,8 +23,10 @@ import ProgressBar from "@components/ProgressBar";
 import VoteCast from "@components/VoteCast";
 import VoteInput from "@components/VoteInput";
 import { Content } from "@components/Card/styled";
-import Loader from "@components/Loader";
-
+import GovernorAlphaABI from "@utils/abi/GovernorAlpha";
+import {formatEther} from "ethers/lib/utils";
+import toProposalState from "@utils/ProposalState";
+import {governorAlphaContract} from "@utils/globals";
 
 const Proposal = ({ id, defaultProposalData }) => {
   // Routing
@@ -41,7 +43,7 @@ const Proposal = ({ id, defaultProposalData }) => {
     executeProposal,
     getEta
   } = governance.useContainer();
-  const { address: authed, unlock } = vechain.useContainer();
+  const { address: authed, provider, tick,  unlock } = vechain.useContainer();
 
   // Local state
   const [data, setData] = useState(JSON.parse(defaultProposalData));
@@ -72,6 +74,32 @@ const Proposal = ({ id, defaultProposalData }) => {
     if (authed && data) {
       const receipt = await getReceipt(data.id);
       setReceipt(receipt);
+    }
+  }
+
+  const refreshVotesAndState = async () => {
+    if (tick && provider)
+    {
+      const proposalsABI = find(GovernorAlphaABI, {name: 'proposals'});
+      const govAlphaContract = provider.thor.account(VEX_NETWORK.governor_alpha.address);
+      const proposalsMethod = govAlphaContract.method(proposalsABI);
+
+      const proposal = await proposalsMethod.call(id);
+
+      const stateABI = find(GovernorAlphaABI, {name:'state'});
+      const stateMethod = govAlphaContract.method(stateABI);
+      const proposalStateRaw = (await stateMethod.call(id)).decoded[0];
+
+      console.log(proposal);
+
+      setData((oldData) => {
+        return {
+          ...oldData,
+          votesFor: parseFloat(formatEther(proposal.decoded.forVotes)),
+          votesAgainst: parseFloat(formatEther(proposal.decoded.againstVotes)),
+          state: toProposalState(proposalStateRaw)
+        }
+      })
     }
   }
 
@@ -258,6 +286,7 @@ const Proposal = ({ id, defaultProposalData }) => {
     }
   };
 
+  useEffect(refreshVotesAndState, [tick]);
   useEffect(fetchProposal, [proposals]);
   useEffect(fetchReceipt, [authed, data]);
 
