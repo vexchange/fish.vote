@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import gfm from "remark-gfm";
 import ReactMarkdown from "react-markdown";
 import Head from "next/head";
-import {find, uniqueId} from "lodash";
+import { find, uniqueId } from "lodash";
 
 import vechain from "@state/vechain";
 import governance from "@state/governance";
 
-import {collectNameByContract, generateActionSignatureHTML, VEX_NETWORK} from "@utils/constants";
+import { collectNameByContract, generateActionSignatureHTML } from "@utils/constants";
 
 import { collectProposals } from "pages/api/proposals";
 
@@ -32,6 +32,7 @@ const Proposal = ({ id, defaultProposalData }) => {
   const {
     currentVotes,
     proposals,
+    governanceContract,
     getReceipt,
     castVote,
     queueProposal,
@@ -62,16 +63,15 @@ const Proposal = ({ id, defaultProposalData }) => {
   }
 
   const refreshVotesAndState = async () => {
-    if (tick && provider)
+    if (tick && provider && governanceContract)
     {
       const proposalsABI = find(GovernorAlphaABI, {name: 'proposals'});
-      const govAlphaContract = provider.thor.account(VEX_NETWORK.governor_alpha.address);
-      const proposalsMethod = govAlphaContract.method(proposalsABI);
+      const proposalsMethod = governanceContract.method(proposalsABI);
 
       const proposal = await proposalsMethod.call(id);
 
       const stateABI = find(GovernorAlphaABI, {name:'state'});
-      const stateMethod = govAlphaContract.method(stateABI);
+      const stateMethod = governanceContract.method(stateABI);
       const proposalStateRaw = (await stateMethod.call(id)).decoded[0];
 
       setData((oldData) => {
@@ -268,7 +268,7 @@ const Proposal = ({ id, defaultProposalData }) => {
     }
   };
 
-  useEffect(refreshVotesAndState, [tick, provider]);
+  useEffect(refreshVotesAndState, [tick, provider, governanceContract]);
   useEffect(fetchETAForQueued, [proposals]);
   useEffect(fetchReceipt, [authed, data]);
 
