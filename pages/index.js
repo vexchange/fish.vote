@@ -212,7 +212,6 @@ export default function Home() {
       </Card>
 
       {/* Show all automated proposals */}
-      {/* TODO: Add message (maybe tooltip) to Button if disabled and inform user that votes are below threshold */}
       <Card
         noPadding
         title="Top proposals"
