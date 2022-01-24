@@ -10,7 +10,7 @@ import Layout from "@components/Layout";
 import Loader from "@components/Loader";
 import Switch from "@components/Switch";
 
-export default function New() {
+export default function All() {
   const router = useRouter(); // Setup router
 
   // Global state
@@ -54,8 +54,8 @@ export default function New() {
               url: '/',
             },
             {
-              name: 'New',
-              url: '/new',
+              name: 'All',
+              url: '/all',
             },
             {
               name: 'Assets',
@@ -69,29 +69,21 @@ export default function New() {
       <Card shortMargin title="Creating a Proposal">
         <Description>
           <p>
-            On Vote.Vexchange, anyone can publish a{" "}
-            <a
-              href="https://medium.com/compound-finance/compound-autonomous-proposals-354e7a2ad6b7"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Crowd Proposal
-            </a>
-            . Then comes the most important work: gathering support from the
-            broader VEX community. We recommend sharing the link to your
-            proposal publicly and finding others who support you. Once your
-            proposal reaches 400 delegate votes, it will be displayed on the
-            Vote.Vexchange home page.
+            On Gov.Vexchange, anyone with more than 100,000 Votes can submit a Proposal
+            on GovernorAlpha. If you want more people to delegate votes to you,
+            We recommend that you go to the delegation channel to canvass for votes and explain
+            why and how you will be acting in Vexchange's long term interests.
           </p>
           <p>
-            Until today, only whales with 10 million votes could submit
-            proposals. Now, <span>even vex can make waves</span>.
+            Then comes the most important work: gathering support from the
+            broader VEX community. To do that, you can go to the governance
+            channel and garner votes for the proposal to pass.
           </p>
         </Description>
       </Card>
 
       <Card
-        title="New proposals"
+        title="All proposals"
         action={{
           name: "Create Proposal",
           handler: routeToCreate,
@@ -99,9 +91,9 @@ export default function New() {
       >
         {loadingProposals ? (
           <Loader />
-        ) : filterNewProposals(proposals).length < 1 ? (
+        ) : proposals.length < 1 ? (
           <Empty
-            content="No one has created a crowd proposal on Vote.Vexchange yet. Check back soon."
+            content="No one has created a proposal on Gov.Vexchange yet. Check back soon."
             link={(
               <a
                 href="https://twitter.com/vexchangeio"
@@ -114,7 +106,7 @@ export default function New() {
           />
         ) : (
           <div>
-            {filterNewProposals(proposals).map((proposal, i) => (
+            {proposals.map((proposal, i) => (
               <HomeProposalLink proposal={proposal} key={i} />
             ))}
           </div>
