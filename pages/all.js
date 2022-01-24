@@ -25,23 +25,6 @@ export default function All() {
     router.push("/create");
   };
 
-  /**
-   * Filter proposals with less than 400 votes
-   * @param {Object[]} proposals list
-   * @returns {Object[]} of proposals with < 400 votes
-   */
-  const filterNewProposals = (proposals) => {
-    // Filter array for object
-    const voteFilter = proposals.filter(
-      // Where votes value < 400
-      (proposal) => parseFloat(proposal.votes) < 400
-    );
-    // Return array sorted by votes
-    return voteFilter.sort((a, b) =>
-      parseFloat(a.votes) < parseFloat(b.votes) ? 1 : -1
-    );
-  };
-
   return (
     <Layout short>
       {/* Path switch */}
