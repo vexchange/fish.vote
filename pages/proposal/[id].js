@@ -268,7 +268,7 @@ const Proposal = ({ id, defaultProposalData }) => {
     }
   };
 
-  useEffect(refreshVotesAndState, [tick]);
+  useEffect(refreshVotesAndState, [tick, provider]);
   useEffect(fetchETAForQueued, [proposals]);
   useEffect(fetchReceipt, [authed, data]);
 
