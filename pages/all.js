@@ -25,6 +25,13 @@ export default function All() {
     router.push("/create");
   };
 
+
+  const sortProposals = (proposals) => {
+    return proposals.sort((a, b) =>
+        parseInt(a.id) < parseInt(b.id) ? 1 : -1
+    );
+  }
+
   return (
     <Layout short>
       {/* Path switch */}
@@ -66,6 +73,7 @@ export default function All() {
       </Card>
 
       <Card
+        noPadding
         title="All proposals"
         action={{
           name: "Create Proposal",
@@ -89,7 +97,7 @@ export default function All() {
           />
         ) : (
           <div>
-            {proposals.map((proposal, i) => (
+            {sortProposals(proposals).map((proposal, i) => (
               <HomeProposalLink proposal={proposal} key={i} />
             ))}
           </div>
