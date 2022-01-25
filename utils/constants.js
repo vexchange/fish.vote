@@ -383,9 +383,10 @@ const collectNameByContract = (contract) => {
   for (const property of Object.keys(VEX_NETWORK)) {
     if (
       // If property is a contract type
-      property !== "minimum_vex" &&
+      property !== "node_url" &&
+      property !== "explorer_base_url" &&
       // And the address matches
-      VEX_NETWORK[property].address?.toLowerCase() === contract.toLowerCase()
+      VEX_NETWORK[property].address.toLowerCase() === contract.toLowerCase()
     ) {
       // Update contract name
       contractName = VEX_NETWORK[property].name;
