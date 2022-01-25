@@ -60,11 +60,8 @@ const VEX_CONSTANTS = {
   }
 }
 
-// Not using the following for now because the frontend can't detect
-// This variable. Only the backend can detect this variable
 // Collect current network
 const MAINNET = process.env.NEXT_PUBLIC_VECHAIN_MAINNET === "true";
-
 
 // Return network array based on network
 const VEX_NETWORK = VEX_CONSTANTS[MAINNET ? "mainnet" : "testnet"]
