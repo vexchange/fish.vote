@@ -3,6 +3,8 @@ import { ethers } from "ethers";
 // Declare constants by network
 const VEX_CONSTANTS = {
   mainnet: {
+    node_url: "https://mainnet.veblocks.net",
+    explorer_base_url: "https://explore.vechain.org/",
     governor_alpha: {
       name: "Governor",
       address: "0xa0a636893Ed688076286174Bc23b34C31BED3089",
@@ -29,6 +31,8 @@ const VEX_CONSTANTS = {
     }
   },
   testnet: {
+    node_url: "https://testnet.veblocks.net",
+    explorer_base_url: "https://explore-testnet.vechain.org/",
     governor_alpha: {
       name: "Governor",
       address: "0x40b4F819bB35D07159AADDd415670328ecf301b5",
@@ -56,8 +60,11 @@ const VEX_CONSTANTS = {
   }
 }
 
+// Not using the following for now because the frontend can't detect
+// This variable. Only the backend can detect this variable
 // Collect current network
 const MAINNET = process.env.NEXT_PUBLIC_VECHAIN_MAINNET === "true";
+
 
 // Return network array based on network
 const VEX_NETWORK = VEX_CONSTANTS[MAINNET ? "mainnet" : "testnet"]
@@ -381,7 +388,7 @@ const collectNameByContract = (contract) => {
       // If property is a contract type
       property !== "minimum_vex" &&
       // And the address matches
-      VEX_NETWORK[property].address.toLowerCase() === contract.toLowerCase()
+      VEX_NETWORK[property].address?.toLowerCase() === contract.toLowerCase()
     ) {
       // Update contract name
       contractName = VEX_NETWORK[property].name;
@@ -473,7 +480,7 @@ const generateActionSignatureHTML = (signature, bytes) => {
       // Link if type(param) === address
       elements.push(
         <a
-          href={`https://explore.vechain.org/accounts/${param}`}
+          href={`${VEX_NETWORK.explorer_base_url}accounts/${param}`}
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -502,6 +509,7 @@ const PROPOSAL_THRESHOLD = 100_000
 export {
   collectNameByContract,
   generateActionSignatureHTML,
+  MAINNET,
   VEX_NETWORK,
   VEX_CONSTANTS,
   VEX_ACTIONS,
