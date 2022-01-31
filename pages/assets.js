@@ -8,12 +8,12 @@ import Description from "@components/Description";
 import Layout from "@components/Layout";
 import Loader from "@components/Loader";
 import Switch from "@components/Switch";
+import Vester from "@components/Vester";
 
 
 export default function Assets() {
-  const { provider } = vechain.useContainer();
 
-  const { balances, isLoading } = assets.useContainer();
+  const { balances, isLoading, vester, isLoadingVester } = assets.useContainer();
 
   return (
     <Layout short>
@@ -52,6 +52,14 @@ export default function Assets() {
           <Loader />
         ) : (
           <BalanceTable balances={balances} />
+        )}
+      </Card>
+
+      <Card title="Treasury Vester">
+        {isLoadingVester ? (
+          <Loader />
+        ) : (
+          <Vester vester={vester}/>
         )}
       </Card>
 

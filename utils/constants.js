@@ -31,7 +31,7 @@ const VEX_CONSTANTS = {
     },
     vester: {
       name: "TreasuryVester",
-      address: "0x8Fc3737CF99984961b43f86ce5C82cfaa4B49657"
+      address: "0xBaE24b616dD108311DCDcD9ec75d08c631afF76B"
     }
   },
   testnet: {

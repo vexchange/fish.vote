@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { VEX_NETWORK } from "@utils/constants";
 import { utils } from "ethers";
 import VEXABI from "@utils/abi/vex";
+import TreasuryVesterABI from "@utils/abi/TreasuryVester";
+import BigNumber from "bignumber.js";
 
 function useAssets()
 {
@@ -18,6 +20,8 @@ function useAssets()
 
     const [balances, setBalances] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [vester, setVester] = useState(null);
+    const [isLoadingVester, setIsLoadingVester] = useState(true);
 
     useEffect(() => {
         const getBalances = () => {
@@ -41,14 +45,51 @@ function useAssets()
             })
         }
 
+        const getVester = async () => {
+            setIsLoadingVester(true);
+            const address = VEX_NETWORK.vester.address
+            const balanceOfABI = find(VEXABI, { name: 'balanceOf' });
+            const balanceOfMethod = provider.thor.account(VEX_NETWORK.vex_governance_token.address).method(balanceOfABI);
+
+            const vesterABIs = ['vestingBegin', 'vestingEnd', 'vestingAmount', 'lastUpdate'].map( methodName => find(TreasuryVesterABI, { name: methodName }));
+            const vesterMethods = vesterABIs.map( abi => provider.thor.account(address).method(abi).call());
+
+            const vexBalanceResult  = (await balanceOfMethod.call(address)).decoded[0];
+            const vesterNumbers = (await Promise.all(vesterMethods)).map(result => result.decoded['0']);
+
+            const currentBlockTimestamp = (await provider.thor.block().get()).timestamp;
+            const vestingEnd = +vesterNumbers[1]
+            const vestingBegin = +vesterNumbers[0]
+            const lastUpdate = +vesterNumbers[3]
+            const vestingAmount = vesterNumbers[2]
+            const vexBalance = utils.formatUnits(vexBalanceResult)
+           
+
+            let claimableAmount
+            if (currentBlockTimestamp >= vestingEnd) {
+                claimableAmount = vexBalance;
+            } else {
+                const rawAmount = new BigNumber(vestingAmount).times(currentBlockTimestamp - lastUpdate).div(vestingEnd - vestingBegin);
+                claimableAmount = utils.formatUnits(rawAmount.toFixed(0));;
+            }
+
+            setVester({ vexBalance, claimableAmount, address})
+            setIsLoadingVester(false);
+        }
+
         if (isEmpty(balances) && provider) {
             getBalances();
+        }
+        if (!vester && provider) {
+            getVester()
         }
     }, [provider]);
 
     return {
         balances,
-        isLoading
+        vester,
+        isLoading,
+        isLoadingVester
     }
 }
 

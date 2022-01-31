@@ -13,6 +13,7 @@
     "@emotion/styled": "^11.6.0",
     "@vechain/connex": "^2.0.5",
     "axios": "^0.21.1",
+    "bignumber.js": "^9.0.2",
     "bnc-onboard": "^1.25.0",
     "currency.js": "^2.0.4",
     "dayjs": "^1.10.4",
