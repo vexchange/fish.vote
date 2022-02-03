@@ -97,6 +97,7 @@ const VEX_ACTIONS = [
             name: "amount",
             placeholder: "value",
             type: "number",
+            decimals: 18
           },
         ],
         values: [],
@@ -113,7 +114,8 @@ const VEX_ACTIONS = [
           {
             name: "amount",
             placeholder: "amount",
-            type: "number"
+            type: "number",
+            decimals: 18
           }
         ],
         values: [],
@@ -130,7 +132,8 @@ const VEX_ACTIONS = [
           {
             name: "amount",
             placeholder: "amount",
-            type: "number"
+            type: "number",
+            decimals: 18
           }
         ],
         values: []
@@ -142,7 +145,8 @@ const VEX_ACTIONS = [
           {
             name: "rawAmount",
             placeholder: "amount",
-            type: "number"
+            type: "number",
+            decimals: 18
           }
         ],
         values: []
@@ -184,7 +188,8 @@ const VEX_ACTIONS = [
           {
             name: "Delay",
             placeholder: "time in seconds. Minimum 2 days (172800), maximum 30 days (2592000)",
-            type: "number"
+            type: "number",
+            decimals: 0
           }
         ],
         values: [],
@@ -214,7 +219,8 @@ const VEX_ACTIONS = [
           {
             name: "swapFee",
             placeholder: "basis points",
-            type: "number"
+            type: "number",
+            decimals: 0
           }
         ],
         values: []
@@ -226,7 +232,8 @@ const VEX_ACTIONS = [
           {
             name: "platformFee",
             placeholder: "basis points",
-            type: "number"
+            type: "number",
+            decimals: 0
           }
         ],
         values: []
@@ -255,7 +262,8 @@ const VEX_ACTIONS = [
           {
             name: "swapFee",
             placeholder: "basis points",
-            type: "number"
+            type: "number",
+            decimals: 0
           }
         ],
         values: []
@@ -272,7 +280,8 @@ const VEX_ACTIONS = [
           {
             name: "platformFee",
             placeholder: "basis points",
-            type: "number"
+            type: "number",
+            decimals: 0
           }
         ],
         values: []
@@ -296,91 +305,6 @@ const VEX_ACTIONS = [
       }
     ]
   },
-  {
-    contract: "Router",
-    address: VEX_NETWORK.router.address,
-    functions: [
-      {
-        name: "Remove liquidity",
-        signature: "removeLiquidity(address,address,uint256,uint256,uint256,address,uint256)",
-        args: [
-          {
-            name: "tokenA",
-            placeholder: "address",
-            type: "text"
-          },
-          {
-            name: "tokenB",
-            placeholder: "address",
-            type: "text"
-          },
-          {
-            name: "liquidity",
-            placeholder: "number of LP tokens",
-            type: "number"
-          },
-          {
-            name: "amountAMin",
-            placeholder: "Amount A minimum",
-            type: "number"
-          },
-          {
-            name: "amountBMin",
-            placeholder: "Amount B minimum",
-            type: "number"
-          },
-          {
-            name: "to",
-            placeholder: "address",
-            type: "text"
-          },
-          {
-            name: "deadline",
-            placeholder: "timestamp",
-            type: "number"
-          }
-        ],
-        values: []
-      },
-      {
-        name: "Remove liquidity VET",
-        signature: "removeLiquidity(address,uint256,uint256,uint256,address,uint256)",
-        args: [
-          {
-            name: "token",
-            placeholder: "address",
-            type: "text"
-          },
-          {
-            name: "liquidity",
-            placeholder: "number of LP tokens",
-            type: "number"
-          },
-          {
-            name: "amountTokenMin",
-            placeholder: "Token Amount Minimum",
-            type: "number"
-          },
-          {
-            name: "amountVetMin",
-            placeholder: "Amount of VET minimum",
-            type: "number"
-          },
-          {
-            name: "to",
-            placeholder: "address",
-            type: "text"
-          },
-          {
-            name: "deadline",
-            placeholder: "timestamp",
-            type: "number"
-          }
-        ],
-        values: []
-      }
-    ]
-  }
 ];
 
 /**

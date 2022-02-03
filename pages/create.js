@@ -19,7 +19,18 @@ import Breadcrumb from "@components/Breadcrumb";
 
 import { PROPOSAL_THRESHOLD } from "@utils/constants";
 
-const defaultActionState = [null, null, [], []];
+const defaultActionState = [
+    // contract address
+    null,
+    // function
+    null,
+    // function arguments array
+    [],
+    // function argument decimals array
+    [],
+    // values array
+    []
+];
 
 export default function Create() {
   const router = useRouter();
@@ -64,6 +75,7 @@ export default function Create() {
         actions.map((action) => action[1]),
         actions.map((action) => action[2]),
         actions.map((action) => action[3]),
+        actions.map((action) => action[4]),
         title,
         description
       );
