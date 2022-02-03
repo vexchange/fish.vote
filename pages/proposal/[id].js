@@ -372,6 +372,7 @@ const Proposal = ({ id, defaultProposalData }) => {
               const name = collectNameByContract(contract);
               // Collect signature data
               const signatureElements = generateActionSignatureHTML(
+                contract,
                 data.signatures[i],
                 data.calldatas[i]
               );
