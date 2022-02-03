@@ -64,7 +64,7 @@ const VEX_CONSTANTS = {
     // Just a placeholder, this address does not contain a contract
     vester: {
       name: "TreasuryVester",
-      address: "0x8Fc3737CF99984961b43f86ce5C82cfaa4B49657"
+      address: "0x3BD14c489dfE092165c7301e2d49EA14A72826e9"
     }
   }
 }
