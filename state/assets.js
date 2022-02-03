@@ -10,7 +10,7 @@ import BigNumber from "bignumber.js";
 
 function useAssets()
 {
-    const { provider } = vechain.useContainer();
+    const { provider, address } = vechain.useContainer();
 
     // list of token addresses to display as assets
     const DISPLAYED_ASSETS = [
@@ -22,6 +22,7 @@ function useAssets()
     const [isLoading, setIsLoading] = useState(false);
     const [vester, setVester] = useState(null);
     const [isLoadingVester, setIsLoadingVester] = useState(true);
+    const [updateBalances, setUpdateBalances] = useState(false);
 
     useEffect(() => {
         const getBalances = () => {
@@ -77,19 +78,71 @@ function useAssets()
             setIsLoadingVester(false);
         }
 
-        if (isEmpty(balances) && provider) {
+        if ((isEmpty(balances) || updateBalances) && provider) {
             getBalances();
+            setUpdateBalances(false)
         }
-        if (!vester && provider) {
-            getVester()
+        if ((!vester || updateBalances) && provider) {
+            getVester();
+            setUpdateBalances(false)
         }
-    }, [provider]);
+    }, [provider, updateBalances]);
+
+    const claimVEXFromVester = async () => {
+        const claimABI = find(TreasuryVesterABI, { name: 'claim' })
+        const method = provider.thor.account(VEX_NETWORK.vester.address).method(claimABI);;
+
+        const clause = method.asClause();
+        const txResponse = await provider.vendor.sign('tx', [clause])
+                                  .signer(address) // This modifier really necessary?
+                                  .comment("Sign to claim VEX for DAO")
+                                  .request();
+    
+        const toastID = toast.loading(<PendingToast tx={txResponse} />);
+        const txVisitor = provider.thor.transaction(txResponse.txid);
+        let txReceipt = null;
+        const ticker = provider.thor.ticker();
+    
+        // Wait for tx to be confirmed and mined
+        while(!txReceipt) {
+          await ticker.next();
+          txReceipt = await txVisitor.getReceipt();
+        }
+    
+        if (!txReceipt.reverted) {
+          toast.update(toastID, {
+            render: (
+              <SuccessToast
+                tx={txReceipt}
+                action="Claimed VEX"
+              />
+            ),
+            type: "success",
+            isLoading: false,
+            autoClose: 5000
+          });
+        }
+        // Handle failed tx
+        else {
+          toast.update(toastID, {
+            render: <ErrorToast />,
+            type: "error",
+            isLoading: false,
+            autoClose: 5000
+          });
+        }
+    
+        // Update balances of assets and vester
+        setUpdateBalances(true);
+      };
+    
 
     return {
         balances,
         vester,
         isLoading,
-        isLoadingVester
+        isLoadingVester,
+        claimVEXFromVester
     }
 }
 

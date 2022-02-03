@@ -1,15 +1,13 @@
 import React from "react";
 import Button from "@components/Button";
+import vechain from "@state/vechain";
 import { formatNumber } from "@utils/functions"
 import AddressLink from '../AddressLink';
 
 import { Wrapper } from './styled';
 
-const Vester = ({ vester }) => {
-
-  const handleClaim = () => {
-      console.log("hadle claim VEX")
-  }
+const Vester = ({ vester, handleClaim }) => {
+  const { address, unlock } = vechain.useContainer();
     return (
     <Wrapper>
       <thead>
@@ -31,13 +29,17 @@ const Vester = ({ vester }) => {
               {formatNumber(vester.claimableAmount)}
             </td>
             <td align="right">
-            <Button
-                  onClick={handleClaim}
-                  background={null}
-                  color={null}
-                >
-                  Claim VEX for DAO
-                </Button>
+            {address ? (
+              <Button
+                onClick={handleClaim}
+                background={null}
+                color={null}
+              >
+                Claim VEX for DAO
+              </Button>
+            ) : (
+              <Button onClick={unlock}>Connect wallet</Button>
+            )}
             </td>
           </tr>
       </tbody>

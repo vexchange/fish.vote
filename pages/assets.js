@@ -13,7 +13,7 @@ import Vester from "@components/Vester";
 
 export default function Assets() {
 
-  const { balances, isLoading, vester, isLoadingVester } = assets.useContainer();
+  const { balances, isLoading, vester, isLoadingVester, claimVEXFromVester } = assets.useContainer();
 
   return (
     <Layout short>
@@ -59,7 +59,7 @@ export default function Assets() {
         {isLoadingVester ? (
           <Loader />
         ) : (
-          <Vester vester={vester}/>
+          <Vester vester={vester} handleClaim={claimVEXFromVester}/>
         )}
       </Card>
 
