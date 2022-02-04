@@ -2,11 +2,16 @@ import vechain from "@state/vechain";
 import { find, isEmpty } from 'lodash';
 import { createContainer } from "unstated-next";
 import { useEffect, useState } from "react";
+import { toast } from 'react-toastify';
 import { VEX_NETWORK } from "@utils/constants";
 import { utils } from "ethers";
 import VEXABI from "@utils/abi/vex";
 import TreasuryVesterABI from "@utils/abi/TreasuryVester";
 import BigNumber from "bignumber.js";
+
+import ErrorToast from "@components/ErrorToast";
+import SuccessToast from "@components/SuccessToast";
+import PendingToast from "@components/PendingToast";
 
 function useAssets()
 {
