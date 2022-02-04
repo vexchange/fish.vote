@@ -82,7 +82,7 @@ export default function Create() {
       // Assuming proposal creation is successful, route to new proposal
       router.push(`/proposal/${proposalId}`);
     } catch (error) {
-      console.log("Error when creating proposal: " + error);
+      console.error("Error when creating proposal: " + error);
     }
 
   };

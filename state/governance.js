@@ -342,9 +342,6 @@ function useGovernance() {
       typeof values[i] !== "undefined" ? [...target, ...values[i]] : [...target]
     );
 
-    console.log(calldataRaw);
-    console.log(argDecimals);
-
     // Convert stringified calldata to bytes
     const calldataBytes = await Promise.all(
       functions.map(
@@ -354,7 +351,6 @@ function useGovernance() {
       )
     );
 
-    console.log(calldataBytes);
     // Create a new proposal
     const proposeABI = find(GovernorAlphaABI, { name: "propose" });
     const proposeMethod = governanceContract.method(proposeABI);
