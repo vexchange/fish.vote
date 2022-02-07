@@ -31,7 +31,7 @@ const VEX_CONSTANTS = {
     },
     vester: {
       name: "TreasuryVester",
-      address: "0xBaE24b616dD108311DCDcD9ec75d08c631afF76B"
+      address: "0x8Fc3737CF99984961b43f86ce5C82cfaa4B49657"
     }
   },
   testnet: {
@@ -61,7 +61,6 @@ const VEX_CONSTANTS = {
       name: "Wrapped VET",
       address: "0x93E5Fa8011612FAB061eF58CbAB9262d2e76407b"
     },
-    // Just a placeholder, this address does not contain a contract
     vester: {
       name: "TreasuryVester",
       address: "0x0f2bAC68Ec5F5Ca86c13a9829BCEd9f442f1786C"
