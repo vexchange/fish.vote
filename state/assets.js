@@ -4,10 +4,9 @@ import { createContainer } from "unstated-next";
 import { useEffect, useState } from "react";
 import { toast } from 'react-toastify';
 import { VEX_NETWORK } from "@utils/constants";
-import { utils } from "ethers";
+import { utils, ethers } from "ethers";
 import VEXABI from "@utils/abi/vex";
 import TreasuryVesterABI from "@utils/abi/TreasuryVester";
-import BigNumber from "bignumber.js";
 
 import ErrorToast from "@components/ErrorToast";
 import SuccessToast from "@components/SuccessToast";
@@ -75,8 +74,8 @@ function useAssets()
             if (currentBlockTimestamp >= vestingEnd) {
                 claimableAmount = vexBalance;
             } else {
-                const rawAmount = new BigNumber(vestingAmount).times(currentBlockTimestamp - lastUpdate).div(vestingEnd - vestingBegin);
-                claimableAmount = utils.formatUnits(rawAmount.toFixed(0));;
+                const rawAmount = ethers.BigNumber.from(vestingAmount).mul(currentBlockTimestamp - lastUpdate).div(vestingEnd - vestingBegin);
+                claimableAmount = utils.formatUnits(rawAmount.toString());;
             }
 
             setVester({ vexBalance, claimableAmount, address})
