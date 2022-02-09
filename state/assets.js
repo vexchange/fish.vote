@@ -73,7 +73,8 @@ function useAssets()
             let claimableAmount
             if (currentBlockTimestamp >= vestingEnd) {
                 claimableAmount = vexBalance;
-            } else {
+            } 
+            else {
                 const rawAmount = ethers.BigNumber.from(vestingAmount).mul(currentBlockTimestamp - lastUpdate).div(vestingEnd - vestingBegin);
                 claimableAmount = utils.formatUnits(rawAmount.toString());;
             }
