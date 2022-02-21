@@ -26,6 +26,8 @@ function useAssets()
     const [isLoading, setIsLoading] = useState(false);
     const [vester, setVester] = useState(null);
     const [isLoadingVester, setIsLoadingVester] = useState(true);
+    const [feeCollector, setFeeCollector] = useState(null);
+    const [isLoadingFeeCollector, setIsLoadingFeeCollector] = useState(true);
     const [updateBalances, setUpdateBalances] = useState(false);
 
     useEffect(() => {
@@ -83,6 +85,19 @@ function useAssets()
             setIsLoadingVester(false);
         }
 
+        const getFeeCollector = async () => {
+          setIsLoadingFeeCollector(true);
+          const address = VEX_NETWORK.fee_collector.address
+          const balanceOfABI = find(VEXABI, { name: 'balanceOf' });
+          const balanceOfMethods = [VEX_NETWORK.vex_wvet.address, VEX_NETWORK.wvet.address].map( tokenAddress => provider.thor.account(tokenAddress).method(balanceOfABI).call(address))
+          const balances = (await Promise.all(balanceOfMethods)).map(result => result.decoded['0']);
+          const vexVetBalance = utils.formatUnits(balances[0].toString())
+          const wvetBalance  = utils.formatUnits(balances[1].toString())
+
+          setFeeCollector({ vexVetBalance, wvetBalance})
+          setIsLoadingFeeCollector(false);
+      }
+
         if ((isEmpty(balances) || updateBalances) && provider) {
             getBalances();
             setUpdateBalances(false)
@@ -91,6 +106,11 @@ function useAssets()
             getVester();
             setUpdateBalances(false)
         }
+
+        if ((!feeCollector || updateBalances) && provider) {
+          getFeeCollector();
+          setUpdateBalances(false)
+      }
     }, [provider, updateBalances]);
 
     const claimVEXFromVester = async () => {
@@ -147,6 +167,8 @@ function useAssets()
         vester,
         isLoading,
         isLoadingVester,
+        feeCollector,
+        isLoadingFeeCollector,
         claimVEXFromVester
     }
 }
