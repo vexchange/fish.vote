@@ -91,13 +91,13 @@ export default function Assets() {
         )}
       </Card>
 
-      <Card title="Fee Collector">
+      {feeCollector &&  <Card title="Fee Collector">
         {isLoadingFeeCollector ? (
           <Loader />
         ) : (
           <FeeCollector feeCollector={feeCollector} handleClaim={handleClaimWVETFromCollector}/>
         )}
-      </Card>
+      </Card>}
 
     </Layout>
   );

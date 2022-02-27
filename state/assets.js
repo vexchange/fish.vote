@@ -108,7 +108,7 @@ function useAssets()
             setUpdateBalances(false)
         }
 
-        if ((!feeCollector || updateBalances) && provider) {
+        if ((!feeCollector || updateBalances) && provider && VEX_NETWORK.fee_collector) {
           getFeeCollector();
           setUpdateBalances(false)
       }
