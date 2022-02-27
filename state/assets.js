@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { toast } from 'react-toastify';
 import { VEX_NETWORK } from "@utils/constants";
 import { utils, ethers } from "ethers";
+import FeeCollectorABI from "@utils/abi/FeeCollector";
 import VEXABI from "@utils/abi/vex";
 import TreasuryVesterABI from "@utils/abi/TreasuryVester";
 
@@ -160,6 +161,54 @@ function useAssets()
         // Update balances of assets and vester
         setUpdateBalances(true);
       };
+
+      const claimWVETFromCollector = async () => {
+        const claimABI = find(FeeCollectorABI, { name: 'SweepDesired' })
+        const method = provider.thor.account(VEX_NETWORK.fee_collector.address).method(claimABI);;
+
+        const clause = method.asClause();
+        const txResponse = await provider.vendor.sign('tx', [clause])
+                                  .signer(address) // This modifier really necessary?
+                                  .comment("Sign to claim WVET for DAO")
+                                  .request();
+    
+        const toastID = toast.loading(<PendingToast tx={txResponse} />);
+        const txVisitor = provider.thor.transaction(txResponse.txid);
+        let txReceipt = null;
+        const ticker = provider.thor.ticker();
+    
+        // Wait for tx to be confirmed and mined
+        while(!txReceipt) {
+          await ticker.next();
+          txReceipt = await txVisitor.getReceipt();
+        }
+    
+        if (!txReceipt.reverted) {
+          toast.update(toastID, {
+            render: (
+              <SuccessToast
+                tx={txReceipt}
+                action="Claimed WVET"
+              />
+            ),
+            type: "success",
+            isLoading: false,
+            autoClose: 5000
+          });
+        }
+        // Handle failed tx
+        else {
+          toast.update(toastID, {
+            render: <ErrorToast />,
+            type: "error",
+            isLoading: false,
+            autoClose: 5000
+          });
+        }
+    
+        // Update balances of assets and vester
+        setUpdateBalances(true);
+      };
     
 
     return {
@@ -169,7 +218,8 @@ function useAssets()
         isLoadingVester,
         feeCollector,
         isLoadingFeeCollector,
-        claimVEXFromVester
+        claimVEXFromVester,
+        claimWVETFromCollector
     }
 }
 

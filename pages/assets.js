@@ -21,6 +21,7 @@ export default function Assets() {
     feeCollector,
     isLoadingFeeCollector,
     claimVEXFromVester,
+    claimWVETFromCollector
   } = assets.useContainer();
 
   const handleClaimVEXFromVester = async () => {
@@ -35,11 +36,10 @@ export default function Assets() {
 
   const handleClaimWVETFromCollector = async () => {
     try {
-      //TODO: Im plemnt claim WVET function
-      //await WVETFromCollecto()
+     await claimWVETFromCollector()
     }
     catch (error) {
-        console.error("Error during claim VWET for DAO from Collector", error);
+        console.error("Error during claim WVET for DAO from Collector", error);
     }
   }
 

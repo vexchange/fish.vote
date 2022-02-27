@@ -44,6 +44,7 @@ const FeeCollector = ({ feeCollector, handleClaim }) => {
                 onClick={handleClaim}
                 background={null}
                 color={null}
+                disabled={feeCollector.wvetBalance === '0.0'}
               >
                 Claim for DAO
               </Button>
