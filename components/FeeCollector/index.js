@@ -1,7 +1,6 @@
 import React from "react";
 import Button from "@components/Button";
 import vechain from "@state/vechain";
-import { VEX_NETWORK } from "@utils/constants";
 import { formatNumber } from "@utils/functions"
 import AddressLink from '../AddressLink';
 
@@ -20,31 +19,22 @@ const FeeCollector = ({ feeCollector, handleClaim }) => {
         </tr>
       </thead>
       <tbody>
-          <tr key={VEX_NETWORK.vex_wvet.address}>
+      {feeCollector.map(({ balance, address, name }) => (
+          <tr key={address}>
             <td type="addr">
-              <AddressLink shorten address={VEX_NETWORK.vex_wvet.address} />
+              <AddressLink shorten address={address} />
             </td>
-            <td>{VEX_NETWORK.vex_wvet.name}</td>
+            <td>{name}</td>
             <td type="num" align="center">
-                {formatNumber(feeCollector.vexVetBalance)}
-            </td>
-            <td></td>
-          </tr>
-          <tr key={VEX_NETWORK.wvet.address}>
-            <td type="addr">
-              <AddressLink shorten address={VEX_NETWORK.wvet.address} />
-            </td>
-            <td>{VEX_NETWORK.wvet.name}</td>
-            <td type="num" align="center">
-                {formatNumber(feeCollector.wvetBalance)}
+                {formatNumber(balance)}
             </td>
             <td align="right">
             {address ? (
               <Button
-                onClick={handleClaim}
+                onClick={() => handleClaim(address)}
                 background={null}
                 color={null}
-                disabled={feeCollector.wvetBalance === '0.0'}
+                disabled={balance === '0.0'}
               >
                 Claim for DAO
               </Button>
@@ -53,6 +43,7 @@ const FeeCollector = ({ feeCollector, handleClaim }) => {
             )}
             </td>
           </tr>
+      ))}
       </tbody>
     </Wrapper>
   )

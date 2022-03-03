@@ -89,15 +89,23 @@ function useAssets()
 
         const getFeeCollector = async () => {
           setIsLoadingFeeCollector(true);
-          const address = VEX_NETWORK.fee_collector.address
           const balanceOfABI = find(VEXABI, { name: 'balanceOf' });
-          const balanceOfMethods = [VEX_NETWORK.vex_wvet.address, VEX_NETWORK.wvet.address].map( tokenAddress => provider.thor.account(tokenAddress).method(balanceOfABI).call(address))
-          const balances = (await Promise.all(balanceOfMethods)).map(result => result.decoded['0']);
-          const vexVetBalance = utils.formatUnits(balances[0].toString())
-          const wvetBalance  = utils.formatUnits(balances[1].toString())
 
-          setFeeCollector({ vexVetBalance, wvetBalance})
-          setIsLoadingFeeCollector(false);
+          const balancePromises = DISPLAYED_ASSETS.map(async token => {
+              const balanceOfMethod = provider.thor.account(token.address).method(balanceOfABI);
+              const { decoded } = await balanceOfMethod.call(VEX_NETWORK.timelock.address);
+
+              return {
+                  address: token.address,
+                  name: token.name,
+                  balance: utils.formatUnits(decoded['0']),
+              };
+          });
+
+          Promise.all(balancePromises).then(data => {
+              setFeeCollector(data);
+              setIsLoadingFeeCollector(false);
+          })
       }
 
         if ((isEmpty(balances) || updateBalances) && provider) {
@@ -163,14 +171,14 @@ function useAssets()
         setUpdateBalances(true);
       };
 
-      const claimWVETFromCollector = async () => {
+      const claimFromCollector = async (token) => {
         const claimABI = find(FeeCollectorABI, { name: 'SweepDesired' })
         const method = provider.thor.account(VEX_NETWORK.fee_collector.address).method(claimABI);;
 
-        const clause = method.asClause();
+        const clause = method.asClause(token);
         const txResponse = await provider.vendor.sign('tx', [clause])
                                   .signer(address) // This modifier really necessary?
-                                  .comment("Sign to claim WVET for DAO")
+                                  .comment("Sign to claim tokens for DAO")
                                   .request();
     
         const toastID = toast.loading(<PendingToast tx={txResponse} />);
@@ -189,7 +197,7 @@ function useAssets()
             render: (
               <SuccessToast
                 tx={txReceipt}
-                action="Claimed WVET"
+                action="Claimed tokens"
               />
             ),
             type: "success",
@@ -220,7 +228,7 @@ function useAssets()
         feeCollector,
         isLoadingFeeCollector,
         claimVEXFromVester,
-        claimWVETFromCollector
+        claimFromCollector
     }
 }
 

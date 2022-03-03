@@ -1,11 +1,17 @@
 const FeeCollectorABI = [
   {
-    "inputs": [],
+    "inputs": [
+        {
+            "internalType": "address",
+            "name": "aToken",
+            "type": "address"
+        }
+    ],
     "name": "SweepDesired",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function",
-  }
+    "type": "function"
+}
 ];
 
 export default FeeCollectorABI;
