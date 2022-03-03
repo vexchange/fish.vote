@@ -21,6 +21,7 @@ function useAssets()
     const DISPLAYED_ASSETS = [
         VEX_NETWORK.vex_governance_token,
         VEX_NETWORK.wvet,
+        VEX_NETWORK.vex_wvet
         ];
 
     const [balances, setBalances] = useState([]);

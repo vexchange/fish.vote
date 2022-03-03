@@ -29,7 +29,7 @@ const BalanceTable = ({ balances }) => {
                 {formatNumber(balance)}
             </td>
             <td type="num" align="right">
-              {formatDollarAmount(balance * tokens[address].usdPrice)}
+              {tokens[address] && formatDollarAmount(balance * tokens[address].usdPrice)}
             </td>
           </tr>
         ))}
