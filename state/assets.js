@@ -93,7 +93,7 @@ function useAssets()
 
           const balancePromises = DISPLAYED_ASSETS.map(async token => {
               const balanceOfMethod = provider.thor.account(token.address).method(balanceOfABI);
-              const { decoded } = await balanceOfMethod.call(VEX_NETWORK.timelock.address);
+              const { decoded } = await balanceOfMethod.call(VEX_NETWORK.fee_collector.address);
 
               return {
                   address: token.address,
