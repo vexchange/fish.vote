@@ -28,9 +28,11 @@ const BalanceTable = ({ balances }) => {
             <td type="num" align="center">
                 {formatNumber(balance)}
             </td>
+            {tokens[address]? (
             <td type="num" align="right">
-              {tokens[address] && formatDollarAmount(balance * tokens[address].usdPrice)}
+                {formatDollarAmount(balance * tokens[address].usdPrice)}
             </td>
+            ) : null}
           </tr>
         ))}
       </tbody>
