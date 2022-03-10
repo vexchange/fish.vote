@@ -31,7 +31,6 @@ const BalanceTable = ({ balances }) => {
             <td type="num" align="right" data-label="USD Value">
               {formatDollarAmount(balance * tokens[address]?.usdPrice)}
             </td>
-            ) : null}
           </tr>
         ))}
       </tbody>
