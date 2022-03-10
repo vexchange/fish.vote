@@ -2,10 +2,13 @@ import { ethers } from "ethers";
 import { find } from "lodash";
 import { getAddress } from "ethers/lib/utils";
 
+// Total VEX to reach quorum
+const QUORUM_TOTAL_VEX = 1000000
+
 // Declare constants by network
 const VEX_CONSTANTS = {
   mainnet: {
-    node_url: "https://mainnet.veblocks.net",
+    node_url: "https://jp.mainnet-node.vexchange.io/",
     explorer_base_url: "https://explore.vechain.org/",
     governor_alpha: {
       name: "Governor",
@@ -468,5 +471,6 @@ export {
   VEX_NETWORK_NAME,
   VEX_CONSTANTS,
   VEX_ACTIONS,
-  PROPOSAL_THRESHOLD
+  PROPOSAL_THRESHOLD,
+  QUORUM_TOTAL_VEX
 };

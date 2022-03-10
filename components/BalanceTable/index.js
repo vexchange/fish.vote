@@ -21,16 +21,15 @@ const BalanceTable = ({ balances }) => {
       <tbody>
         {balances.map(({ balance, address, name }) => (
           <tr key={address}>
-            <td type="addr">
+            <td type="addr" data-label="Address">
               <AddressLink shorten address={address} />
             </td>
-            <td>{name}</td>
-            <td type="num" align="center">
+            <td data-label="Name">{name}</td>
+            <td type="num" align="center" data-label="Amount">
                 {formatNumber(balance)}
             </td>
-            {tokens[address]? (
-            <td type="num" align="right">
-                {formatDollarAmount(balance * tokens[address].usdPrice)}
+            <td type="num" align="right" data-label="USD Value">
+              {formatDollarAmount(balance * tokens[address]?.usdPrice)}
             </td>
             ) : null}
           </tr>
