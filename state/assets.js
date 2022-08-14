@@ -72,12 +72,12 @@ function useAssets()
             const lastUpdate = +vesterNumbers[3]
             const vestingAmount = vesterNumbers[2]
             const vexBalance = utils.formatUnits(vexBalanceResult)
-           
+
 
             let claimableAmount
             if (currentBlockTimestamp >= vestingEnd) {
                 claimableAmount = vexBalance;
-            } 
+            }
             else {
                 const rawAmount = ethers.BigNumber.from(vestingAmount).mul(currentBlockTimestamp - lastUpdate).div(vestingEnd - vestingBegin);
                 claimableAmount = utils.formatUnits(rawAmount.toString());;
@@ -132,18 +132,18 @@ function useAssets()
                                   .signer(address) // This modifier really necessary?
                                   .comment("Sign to claim VEX for DAO")
                                   .request();
-    
+
         const toastID = toast.loading(<PendingToast tx={txResponse} />);
         const txVisitor = provider.thor.transaction(txResponse.txid);
         let txReceipt = null;
         const ticker = provider.thor.ticker();
-    
+
         // Wait for tx to be confirmed and mined
         while(!txReceipt) {
           await ticker.next();
           txReceipt = await txVisitor.getReceipt();
         }
-    
+
         if (!txReceipt.reverted) {
           toast.update(toastID, {
             render: (
@@ -166,14 +166,14 @@ function useAssets()
             autoClose: 5000
           });
         }
-    
+
         // Update balances of assets and vester
         setUpdateBalances(true);
       };
 
       const claimFromCollector = async (token) => {
         const isWVET = (token === VEX_NETWORK.wvet.address);
-        const claimABI = isWVET ? find(SWEEP_DESIRED_ABI, { name: 'SweepDesired' }) 
+        const claimABI = isWVET ? find(SWEEP_DESIRED_ABI, { name: 'SweepDesired' })
                                 : find(SWEEP_DESIRED_MANUAL_ABI, { name: 'SweepDesired' })
 
         const method = provider.thor.account(VEX_NETWORK.fee_collector.address).method(claimABI);;
@@ -184,18 +184,18 @@ function useAssets()
                                   .signer(address) // This modifier really necessary?
                                   .comment("Sign to claim tokens for DAO")
                                   .request();
-    
+
         const toastID = toast.loading(<PendingToast tx={txResponse} />);
         const txVisitor = provider.thor.transaction(txResponse.txid);
         let txReceipt = null;
         const ticker = provider.thor.ticker();
-    
+
         // Wait for tx to be confirmed and mined
         while(!txReceipt) {
           await ticker.next();
           txReceipt = await txVisitor.getReceipt();
         }
-    
+
         if (!txReceipt.reverted) {
           toast.update(toastID, {
             render: (
@@ -218,7 +218,7 @@ function useAssets()
             autoClose: 5000
           });
         }
-    
+
         // Update balances of assets and vester
         setUpdateBalances(true);
       };
@@ -234,7 +234,7 @@ function useAssets()
         const tokenPrice = (token0.usdPrice * token0Reserve + token1.usdPrice * token1Reserve) / tokenSupply
         return tokenPrice
       };
-    
+
 
     return {
         balances,

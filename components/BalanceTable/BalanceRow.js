@@ -5,6 +5,8 @@ import assets from "@state/assets";
 import tokenInfo from "@state/tokenInfo";
 import pairInfo from "@state/pairInfo";
 
+const format = '0.0a';
+
 const BalanceRow = ({ balance, address, name }) => {
   const { tokens } = tokenInfo.useContainer();
   const { pairs } = pairInfo.useContainer();
@@ -23,14 +25,14 @@ const BalanceRow = ({ balance, address, name }) => {
     <>
       <tr key={address}>
         <td type="addr" data-label="Address">
-          <AddressLink shorten address={address} />
+          <AddressLink shorten length={4} address={address} />
         </td>
         <td data-label="Name">{name}</td>
         <td type="num" align="center" data-label="Amount">
-          {formatNumber(balance)}
+          {formatNumber(balance, format)}
         </td>
         <td type="num" align="right" data-label="USD Value">
-          { usdTokenPrice? formatDollarAmount(balance * usdTokenPrice) : null}
+          { usdTokenPrice? formatDollarAmount(balance * usdTokenPrice, format) : null}
         </td>
       </tr>
     </>

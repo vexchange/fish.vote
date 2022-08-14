@@ -8,7 +8,9 @@ import Layout from "@components/Layout";
 import Loader from "@components/Loader";
 import Switch from "@components/Switch";
 import Vester from "@components/Vester";
+import Divider from "@components/Divider";
 import FeeCollector from "@components/FeeCollector";
+import Block, { Col } from "@components/Block";
 
 
 export default function Assets() {
@@ -75,14 +77,6 @@ export default function Assets() {
         </Description>
       </Card>
 
-      <Card title="Timelock">
-        {isLoading ? (
-          <Loader />
-        ) : (
-          <BalanceTable balances={balances} />
-        )}
-      </Card>
-
       <Card title="Treasury Vester">
         {isLoadingVester ? (
           <Loader />
@@ -91,13 +85,51 @@ export default function Assets() {
         )}
       </Card>
 
-      {feeCollector &&  <Card title="Fee Collector">
+      <Divider />
+
+      {feeCollector &&  <Card title="WVET Fee Collector">
         {isLoadingFeeCollector ? (
           <Loader />
         ) : (
           <FeeCollector feeCollector={feeCollector} handleClaim={handleClaimFromCollector}/>
         )}
       </Card>}
+
+      <Divider horizontal />
+
+      <Card title="Distributor">
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <BalanceTable balances={balances} />
+        )}
+      </Card>
+
+      <Block>
+        <Col>
+          <Divider horizontal />
+
+          {feeCollector &&  <Card title="VEX Fee Collector">
+            {isLoadingFeeCollector ? (
+              <Loader />
+            ) : (
+              <FeeCollector feeCollector={feeCollector} handleClaim={handleClaimFromCollector}/>
+            )}
+          </Card>}
+        </Col>
+
+        <Col>
+          <Divider horizontal />
+
+          <Card title="Timelock">
+            {isLoading ? (
+              <Loader />
+            ) : (
+              <BalanceTable balances={balances} />
+            )}
+          </Card>
+        </Col>
+      </Block>
 
     </Layout>
   );

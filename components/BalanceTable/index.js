@@ -3,6 +3,7 @@ import { Wrapper } from "./styled";
 import BalanceRow from "./BalanceRow";
 
 const BalanceTable = ({ balances }) => {
+  console.log(balances)
   return (
     <Wrapper>
       <thead>
