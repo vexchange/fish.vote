@@ -1,4 +1,4 @@
-import { Wrapper } from "./styled";
+import { Wrapper, StyledCol } from "./styled";
 
 const Block = ({ children }) => (
   <Wrapper>
@@ -7,9 +7,9 @@ const Block = ({ children }) => (
 );
 
 export const Col = ({ children }) => (
-  <div>
+  <StyledCol>
     { children }
-  </div>
+  </StyledCol>
 );
 
 export default Block;

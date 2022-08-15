@@ -2,7 +2,8 @@ import { VEX_NETWORK } from "@utils/constants"; // Constants
 import assets from "@state/assets";
 
 import BalanceTable from "@components/BalanceTable";
-import Card from "@components/Card";
+import Button from "@components/Button";
+import Card  from "@components/Card";
 import Description from "@components/Description";
 import Layout from "@components/Layout";
 import Loader from "@components/Loader";
@@ -108,7 +109,14 @@ export default function Assets() {
       <Block>
         <Col>
           <Divider horizontal />
+        </Col>
+        <Col>
+          <Divider horizontal />
+        </Col>
+      </Block>
 
+      <Block>
+        <Col>
           {feeCollector &&  <Card title="VEX Fee Collector">
             {isLoadingFeeCollector ? (
               <Loader />
@@ -119,9 +127,13 @@ export default function Assets() {
         </Col>
 
         <Col>
-          <Divider horizontal />
-
-          <Card title="Timelock">
+          <Card
+            title="Timelock"
+            special
+            footer={
+              <Button>Receive Funds</Button>
+            }
+          >
             {isLoading ? (
               <Loader />
             ) : (

@@ -9,14 +9,13 @@ export const Wrapper = styled.div`
     margin-bottom: 24px;
   }
 
-  ${props => props.horizontal ? css`
-    hr {
+  ${({ horizontal }) => horizontal && css`
+     hr {
       width: 1px;
       height: 24px;
       background-color: #F5A788;
       border: none;
       margin-bottom: 24px;
     }
-  ` : ``
-  }
+  `}
 `;
