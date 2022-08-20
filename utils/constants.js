@@ -14,6 +14,10 @@ const VEX_CONSTANTS = {
       name: "Governor",
       address: "0xa0a636893Ed688076286174Bc23b34C31BED3089",
     },
+    distributor: {
+      name: "Distributor",
+      address: "0x72ee1c849b7353ad1452e56af136e4b0ff68a07e",
+    },
     vex_governance_token: {
       name: "VEX",
       address: "0x0BD802635eb9cEB3fCBe60470D2857B86841aab6",
@@ -38,9 +42,13 @@ const VEX_CONSTANTS = {
       name: "TreasuryVester",
       address: "0x8Fc3737CF99984961b43f86ce5C82cfaa4B49657"
     },
-    fee_collector: {
-      name: "FeeCollector",
-      address: "0x17D252083c79Db33866295078ED955B04e1C61c8"
+    wvet_fee_collector: {
+      name: "WVETFeeCollector",
+      address: "0xc2ccf0af1b34367b639d0fd7bb4335da12bcc798"
+    },
+    vex_fee_collector: {
+      name: "VEXFeeCollector",
+      address: "0x10445a86645838306194c07f81ebd00bb7b82598"
     },
     vex_wvet: {
       name: "VEX/WVET",

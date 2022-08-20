@@ -4,7 +4,7 @@ import AddressLink from '../AddressLink';
 
 import { Wrapper } from './styled';
 
-const FeeCollector = ({ feeCollector }) => {
+const FeeCollector = ({ data }) => {
     return (
     <Wrapper>
       <thead>
@@ -16,7 +16,7 @@ const FeeCollector = ({ feeCollector }) => {
         </tr>
       </thead>
       <tbody>
-      {feeCollector.map(({ balance, address, name }) => (
+      {data.map(({ balance, address, name }) => (
         <tr key={address}>
           <td type="addr">
             <AddressLink shorten address={address} />

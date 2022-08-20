@@ -1,5 +1,7 @@
 import { VEX_NETWORK } from "@utils/constants"; // Constants
+import vechain from "@state/vechain";
 import assets from "@state/assets";
+import * as ACTIONS from "@state/assets/state";
 
 import BalanceTable from "@components/BalanceTable";
 import Button from "@components/Button";
@@ -13,18 +15,13 @@ import Divider from "@components/Divider";
 import FeeCollector from "@components/FeeCollector";
 import Block, { Col } from "@components/Block";
 
-
 export default function Assets() {
+  const { address, tick, unlock } = vechain.useContainer();
 
   const {
-    balances,
-    isLoading,
-    vester,
-    isLoadingVester,
-    feeCollector,
-    isLoadingFeeCollector,
+    state,
     claimVEXFromVester,
-    claimFromCollector
+    recieveFunds,
   } = assets.useContainer();
 
   const handleClaimVEXFromVester = async () => {
@@ -36,14 +33,8 @@ export default function Assets() {
     }
   }
 
-
-  const handleClaimFromCollector = async (token) => {
-    try {
-     await claimFromCollector(token)
-    }
-    catch (error) {
-        console.error("Error during claim WVET for DAO from Collector", error);
-    }
+  const handleOnClick = () => {
+    recieveFunds()
   }
 
   return (
@@ -79,30 +70,30 @@ export default function Assets() {
       </Card>
 
       <Card title="Treasury Vester">
-        {isLoadingVester ? (
+        {state.vester.isLoading ? (
           <Loader />
         ) : (
-          <Vester vester={vester} handleClaim={handleClaimVEXFromVester}/>
+          <Vester data={state.vester.data} handleClaim={handleClaimVEXFromVester}/>
         )}
       </Card>
 
       <Divider />
 
-      {feeCollector &&  <Card title="WVET Fee Collector">
-        {isLoadingFeeCollector ? (
+      <Card title="WVET Fee Collector">
+        {state.wvet.isLoading ? (
           <Loader />
         ) : (
-          <FeeCollector feeCollector={feeCollector} handleClaim={handleClaimFromCollector}/>
+          <FeeCollector data={state.wvet.data} />
         )}
-      </Card>}
+      </Card>
 
       <Divider horizontal />
 
       <Card title="Distributor">
-        {isLoading ? (
+        {state.distributor.isLoading ? (
           <Loader />
         ) : (
-          <BalanceTable balances={balances} />
+          <BalanceTable data={state.distributor.data} />
         )}
       </Card>
 
@@ -117,13 +108,13 @@ export default function Assets() {
 
       <Block>
         <Col>
-          {feeCollector &&  <Card title="VEX Fee Collector">
-            {isLoadingFeeCollector ? (
+          <Card title="VEX Fee Collector">
+            {state.vex.isLoading ? (
               <Loader />
             ) : (
-              <FeeCollector feeCollector={feeCollector} handleClaim={handleClaimFromCollector}/>
+              <FeeCollector data={state.vex.data} />
             )}
-          </Card>}
+          </Card>
         </Col>
 
         <Col>
@@ -131,13 +122,13 @@ export default function Assets() {
             title="Timelock"
             special
             footer={
-              <Button>Receive Funds</Button>
+              <Button onClick={handleOnClick}>Receive Funds</Button>
             }
           >
-            {isLoading ? (
+            {state.timelock.isLoading ? (
               <Loader />
             ) : (
-              <BalanceTable balances={balances} />
+              <BalanceTable data={state.timelock.data} />
             )}
           </Card>
         </Col>
