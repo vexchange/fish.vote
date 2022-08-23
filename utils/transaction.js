@@ -10,12 +10,12 @@ const setTransaction = (txResponse, provider) => {
 		const txVisitor = provider.thor.transaction(txResponse.txid);
 		let txReceipt = null;
 		const ticker = provider.thor.ticker();
-		
+
 		while(!txReceipt) {
 			await ticker.next();
 			txReceipt = await txVisitor.getReceipt();
 		}
-		
+
 		if (!txReceipt.reverted) {
 			toast.update(toastID, {
 				render: (
@@ -28,7 +28,7 @@ const setTransaction = (txResponse, provider) => {
 				isLoading: false,
 				autoClose: 5000
 			});
-			
+
 			resolve();
 		}
 		// Handle failed tx
@@ -39,7 +39,7 @@ const setTransaction = (txResponse, provider) => {
 				isLoading: false,
 				autoClose: 5000
 			});
-			
+
 			reject();
 		}
 	});

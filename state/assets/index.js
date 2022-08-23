@@ -176,11 +176,13 @@ const useAssets = () => {
   }, [provider, updateBalances]);
 
   const recieveFunds = async (token) => {
-    // 1. sweep wvet fee collector
-    const wvetSweepMethod = provider.thor.account(VEX_NETWORK.wvet_fee_collector.address).method(SWEEP_DESIRED_ABI);
+    // ---------------------- Method ---------------------- //
 
-    // 2. sell into wvet
+    // 1. sell into wvet
     const sellHoldingWvetMethod = provider.thor.account(VEX_NETWORK.wvet_fee_collector.address).method(SELL_HOLDING_ABI);
+
+    // 2. sweep wvet fee collector
+    const wvetSweepMethod = provider.thor.account(VEX_NETWORK.wvet_fee_collector.address).method(SWEEP_DESIRED_ABI);
 
     // 3. distribute
     const distributeMethod = provider.thor.account(VEX_NETWORK.distributor.address).method(DISTRIBUTE_ABI);
@@ -191,29 +193,67 @@ const useAssets = () => {
     // 5. sell into vex
     const sellHoldingVexMethod = provider.thor.account(VEX_NETWORK.vex_fee_collector.address).method(SELL_HOLDING_ABI);
 
+    // ---------------------- Clauses ---------------------- //
 
+    // 1. sell into wvet
+    const sellHoldingWvetClause = sellHoldingWvetMethod.asClause('0x0000000000000000000000000000000000000000');
+
+    // 2. sweep wvet fee collector
     const wvetSweepClause = wvetSweepMethod.asClause();
-    // sell holding still needs a argument
-    // const sellHoldingWvetClause = sellHoldingWvetMethod.asClause();
-    // const distributeClause = distributeMethod.asClause();
-    //const vexSweepClause = vexSweepMethod.asClause();
-    // sell holding still needs a argument
-    // const sellHoldingVexClause = sellHoldingVexMethod.asClause();
 
-    const txResponse = await provider.vendor.sign('tx', [
-      wvetSweepClause,
-      // sellHoldingWvetClause,
-      // distributeClause,
-      // vexSweepClause,
-      // sellHoldingVexClause
-    ])
-      .signer(address)
-      .comment("Sign to claim VEX for DAO")
-      .request();
+    // 3. distribute
+    const distributeClause = distributeMethod.asClause();
 
-    // handle transaction
-    setTransaction(txResponse, provider);
-    setUpdateBalances(true);
+    // 4. sell into vex
+    const sellHoldingVexClause = sellHoldingVexMethod.asClause('0x0000000000000000000000000000000000000000');
+
+    // 5. sweep vex fee collector
+    const vexSweepClause = vexSweepMethod.asClause();
+
+    // ---------------------- Responses ---------------------- //
+
+    try {
+      // 1. sell into wvet
+      const sellHoldingWvetTxResponse = await provider.vendor.sign('tx', [ sellHoldingWvetClause ])
+        .signer(address)
+        .comment("Sell holding vet response")
+        .request()
+
+      // 2. sweep wvet fee collector
+      const wvetSweepTxResponse = await provider.vendor.sign('tx', [ wvetSweepClause ])
+        .signer(address)
+        .dependsOn(sellHoldingWvetTxResponse.txid)
+        .comment("Sell holding vet response")
+        .request()
+
+      // 3. distribute
+      const distributeTxResponse = await provider.vendor.sign('tx', [ distributeClause ])
+        .signer(address)
+        .dependsOn(wvetSweepTxResponse.txid)
+        .comment("Sell holding vet response")
+        .request()
+
+      // 4. sweep vex fee collector
+      const sellHoldingVexTxResponse = await provider.vendor.sign('tx', [ sellHoldingVexClause ])
+        .signer(address)
+        .dependsOn(distributeTxResponse.txid)
+        .comment("Sell holding vet response")
+        .request()
+
+      // 5. sweep vex fee collector
+      const vexSweepTxResponse = await provider.vendor.sign('tx', [ vexSweepClause ])
+        .signer(address)
+        .dependsOn(sellHoldingVexTxResponse.txid)
+        .comment("Sell holding vet response")
+        .request()
+
+
+      // handle transaction
+      setTransaction(txResponse, provider);
+      setUpdateBalances(true);
+    } catch (error) {
+      throw new Error(error)
+    }
   }
 
   const getUsdTokenPrice = async (tokenAddress, pairs, tokens ) => {
