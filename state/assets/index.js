@@ -2,13 +2,13 @@ import vechain from "@state/vechain";
 import { find, isEmpty } from 'lodash';
 import { createContainer } from "unstated-next";
 import { useEffect, useState, useReducer } from "react";
-import { toast } from 'react-toastify';
 import { VEX_NETWORK } from "@utils/constants";
 import { utils, ethers } from "ethers";
 import { SWEEP_DESIRED_ABI, SELL_HOLDING_ABI } from "@utils/abi/FeeCollector";
 import { DISTRIBUTE_ABI } from "@utils/abi/Distributor";
 import VEXABI from "@utils/abi/vex";
 import TreasuryVesterABI from "@utils/abi/TreasuryVester";
+import setTransaction from "@utils/transaction";
 
 import {
   ACTIONS,
@@ -16,19 +16,8 @@ import {
   reducer,
 } from './state'
 
-import ErrorToast from "@components/ErrorToast";
-import SuccessToast from "@components/SuccessToast";
-import PendingToast from "@components/PendingToast";
-
 const useAssets = () => {
   const { provider, address } = vechain.useContainer();
-
-  // list of token addresses to display as assets
-  const DISPLAYED_ASSETS = [
-    VEX_NETWORK.vex_governance_token,
-    VEX_NETWORK.wvet,
-    VEX_NETWORK.vex_wvet
-  ];
 
   const [state, dispatch] = useReducer(reducer, initialState);
   const [updateBalances, setUpdateBalances] = useState(false);
@@ -40,7 +29,7 @@ const useAssets = () => {
     const getTimelockBalances = () => {
       dispatch({ type: ACTIONS.GET_TIMELOCK_BALANCES });
 
-      const balancePromises = DISPLAYED_ASSETS.map(async token => {
+      const balancePromises = VEX_NETWORK.timelock.displayed_assests.map(async token => {
         const balanceOfMethod = provider.thor.account(token.address).method(balanceOfABI);
         const { decoded } = await balanceOfMethod.call(VEX_NETWORK.timelock.address);
 
@@ -60,7 +49,7 @@ const useAssets = () => {
     const getDistributor = () => {
       dispatch({ type: ACTIONS.GET_DISTRIBUTOR_BALANCES });
 
-      const balancePromises = DISPLAYED_ASSETS.map(async token => {
+      const balancePromises = VEX_NETWORK.distributor.displayed_assests.map(async token => {
         const balanceOfMethod = provider.thor.account(token.address).method(balanceOfABI);
         const { decoded } = await balanceOfMethod.call(VEX_NETWORK.distributor.address);
 
@@ -120,7 +109,7 @@ const useAssets = () => {
     const getVexFeeCollector = async () => {
       dispatch({ type: ACTIONS.GET_VEX_BALANCES });
 
-      const balancePromises = DISPLAYED_ASSETS.map(async token => {
+      const balancePromises = VEX_NETWORK.vex_fee_collector.displayed_assests.map(async token => {
         const balanceOfMethod = provider.thor.account(token.address).method(balanceOfABI);
         const { decoded } = await balanceOfMethod.call(VEX_NETWORK.vex_fee_collector.address);
 
@@ -139,7 +128,7 @@ const useAssets = () => {
     const getWvetFeeCollector = async () => {
       dispatch({ type: ACTIONS.GET_WVET_BALANCES });
 
-      const balancePromises = DISPLAYED_ASSETS.map(async token => {
+      const balancePromises = VEX_NETWORK.wvet_fee_collector.displayed_assests.map(async token => {
         const balanceOfMethod = provider.thor.account(token.address).method(balanceOfABI);
         const { decoded } = await balanceOfMethod.call(VEX_NETWORK.wvet_fee_collector.address);
 
@@ -204,23 +193,27 @@ const useAssets = () => {
 
 
     const wvetSweepClause = wvetSweepMethod.asClause();
-    const sellHoldingWvetClause = sellHoldingWvetMethod.asClause();
-    const distributeClause = distributeMethod.asClause();
-    const vexSweepClause = vexSweepMethod.asClause();
-    const sellHoldingVexClause = sellHoldingVexMethod.asClause();
+    // sell holding still needs a argument
+    // const sellHoldingWvetClause = sellHoldingWvetMethod.asClause();
+    // const distributeClause = distributeMethod.asClause();
+    //const vexSweepClause = vexSweepMethod.asClause();
+    // sell holding still needs a argument
+    // const sellHoldingVexClause = sellHoldingVexMethod.asClause();
 
     const txResponse = await provider.vendor.sign('tx', [
       wvetSweepClause,
-      sellHoldingWvetClause,
-      distributeClause,
-      vexSweepClause,
-      sellHoldingVexClause
+      // sellHoldingWvetClause,
+      // distributeClause,
+      // vexSweepClause,
+      // sellHoldingVexClause
     ])
       .signer(address)
       .comment("Sign to claim VEX for DAO")
       .request();
 
     // handle transaction
+    setTransaction(txResponse, provider);
+    setUpdateBalances(true);
   }
 
   const getUsdTokenPrice = async (tokenAddress, pairs, tokens ) => {
@@ -229,11 +222,11 @@ const useAssets = () => {
     const totalSupplyABI = find(VEXABI, { name: "totalSupply" });
     const totalSupplyMethod = provider.thor.account(tokenAddress).method(totalSupplyABI);
     const tokenSupply  = utils.formatUnits((await totalSupplyMethod.call()).decoded[0]);
-    const pairInfo = pairs[tokenAddress]
-    const { token0, token0Reserve, token1, token1Reserve } = pairInfo
-    const tokenPrice = (token0.usdPrice * token0Reserve + token1.usdPrice * token1Reserve) / tokenSupply
+    const pairInfo = pairs[tokenAddress];
+    const { token0, token0Reserve, token1, token1Reserve } = pairInfo;
+    const tokenPrice = (token0.usdPrice * token0Reserve + token1.usdPrice * token1Reserve) / tokenSupply;
 
-    return tokenPrice
+    return tokenPrice;
   };
 
   const claimVEXFromVester = () => {}

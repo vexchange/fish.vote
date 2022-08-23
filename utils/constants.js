@@ -5,6 +5,17 @@ import { getAddress } from "ethers/lib/utils";
 // Total VEX to reach quorum
 const QUORUM_TOTAL_VEX = 1000000
 
+
+const vex_governance_token = {
+  name: "VEX",
+  address: "0x0BD802635eb9cEB3fCBe60470D2857B86841aab6",
+}
+
+const wvet = {
+  name: "Wrapped VET",
+  address: "0xD8CCDD85abDbF68DFEc95f06c973e87B1b5A9997"
+}
+
 // Declare constants by network
 const VEX_CONSTANTS = {
   mainnet: {
@@ -17,14 +28,13 @@ const VEX_CONSTANTS = {
     distributor: {
       name: "Distributor",
       address: "0x72ee1c849b7353ad1452e56af136e4b0ff68a07e",
+      displayed_assests: [wvet]
     },
-    vex_governance_token: {
-      name: "VEX",
-      address: "0x0BD802635eb9cEB3fCBe60470D2857B86841aab6",
-    },
+    vex_governance_token,
     timelock: {
       name: "Timelock",
       address: "0x41D293Ee2924FF67Bd934fC092Be408162448f86",
+      displayed_assests: [wvet, vex_governance_token]
     },
     factory: {
       name: "VexchangeV2Factory",
@@ -44,11 +54,13 @@ const VEX_CONSTANTS = {
     },
     wvet_fee_collector: {
       name: "WVETFeeCollector",
-      address: "0xc2ccf0af1b34367b639d0fd7bb4335da12bcc798"
+      address: "0xc2ccf0af1b34367b639d0fd7bb4335da12bcc798",
+      displayed_assests: [wvet]
     },
     vex_fee_collector: {
       name: "VEXFeeCollector",
-      address: "0x10445a86645838306194c07f81ebd00bb7b82598"
+      address: "0x10445a86645838306194c07f81ebd00bb7b82598",
+      displayed_assests: [wvet, vex_governance_token]
     },
     vex_wvet: {
       name: "VEX/WVET",
