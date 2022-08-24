@@ -16,6 +16,10 @@ const wvet = {
   address: "0xD8CCDD85abDbF68DFEc95f06c973e87B1b5A9997"
 }
 
+const vex_wvet = {
+  name: "VEX/WVET",
+  address: "0x39cd888a1583498AD30E716625AE1a00ff51286D"
+}
 // Declare constants by network
 const VEX_CONSTANTS = {
   mainnet: {
@@ -31,10 +35,12 @@ const VEX_CONSTANTS = {
       displayed_assests: [wvet]
     },
     vex_governance_token,
+    vex_wvet,
+    wvet,
     timelock: {
       name: "Timelock",
       address: "0x41D293Ee2924FF67Bd934fC092Be408162448f86",
-      displayed_assests: [wvet, vex_governance_token]
+      displayed_assests: [wvet, vex_governance_token, vex_wvet]
     },
     factory: {
       name: "VexchangeV2Factory",
@@ -43,10 +49,6 @@ const VEX_CONSTANTS = {
     router: {
       name: "Router",
       address: "0x6c0a6e1d922e0e63901301573370b932ae20dadb",
-    },
-    wvet: {
-      name: "Wrapped VET",
-      address: "0xD8CCDD85abDbF68DFEc95f06c973e87B1b5A9997"
     },
     vester: {
       name: "TreasuryVester",
@@ -62,10 +64,6 @@ const VEX_CONSTANTS = {
       address: "0x10445a86645838306194c07f81ebd00bb7b82598",
       displayed_assests: [wvet, vex_governance_token]
     },
-    vex_wvet: {
-      name: "VEX/WVET",
-      address: "0x39cd888a1583498AD30E716625AE1a00ff51286D"
-    }
   },
   testnet: {
     node_url: "https://testnet.veblocks.net",

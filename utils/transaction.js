@@ -4,7 +4,7 @@ import ErrorToast from "@components/ErrorToast";
 import SuccessToast from "@components/SuccessToast";
 import PendingToast from "@components/PendingToast";
 
-const setTransaction = (txResponse, provider) => {
+const setTransaction = async (txResponse, provider) => {
 	return new Promise(async (resolve, reject) => {
 		const toastID = toast.loading(<PendingToast tx={txResponse} />);
 		const txVisitor = provider.thor.transaction(txResponse.txid);
