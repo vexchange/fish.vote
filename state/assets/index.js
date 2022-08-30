@@ -196,7 +196,9 @@ const useAssets = () => {
     // ---------------------- Clauses ---------------------- //
 
     // 1. sell into wvet
-    const sellHoldingWvetClause = sellHoldingWvetMethod.asClause(VEX_NETWORK.wvet.address);
+    const assetsToWVET = VEX_NETWORK.wvet_fee_collector.displayed_assests.map(token => {
+      return sellHoldingWvetMethod.asClause(token.address);
+    });
 
     // 2. sweep wvet fee collector
     const wvetSweepClause = wvetSweepMethod.asClause();
@@ -205,61 +207,31 @@ const useAssets = () => {
     const distributeClause = distributeMethod.asClause();
 
     // 4. sell into vex
-    const sellHoldingVexClause = sellHoldingVexMethod.asClause(VEX_NETWORK.vex.address);
+    const assetsToVEX = VEX_NETWORK.vex_fee_collector.displayed_assests.map(token => {
+      return sellHoldingVexMethod.asClause(token.address);
+    })
 
     // 5. sweep vex fee collector
     const vexSweepClause = vexSweepMethod.asClause();
 
     // ---------------------- Responses ---------------------- //
-
     try {
       // 1. sell into wvet
-      const sellHoldingWvetTxResponse = await provider.vendor.sign('tx', [ sellHoldingWvetClause ])
+      const txResponse = await provider.vendor.sign('tx', [
+        ...assetsToWVET,
+        wvetSweepClause,
+        distributeClause,
+        ...assetsToVEX,
+        vexSweepClause,
+      ])
         .signer(address)
         .comment("Sell holding vet response")
         .request()
 
-      await setTransaction(sellHoldingWvetTxResponse , provider);
-
-      // 2. sweep wvet fee collector
-      const wvetSweepTxResponse = await provider.vendor.sign('tx', [ wvetSweepClause ])
-        .signer(address)
-        .dependsOn(sellHoldingWvetTxResponse.txid)
-        .comment("Sell holding vet response")
-        .request()
-
-      await setTransaction(wvetSweepTxResponse, provider);
-
-      // 3. distribute
-      const distributeTxResponse = await provider.vendor.sign('tx', [ distributeClause ])
-        .signer(address)
-        .dependsOn(wvetSweepTxResponse.txid)
-        .comment("Sell holding vet response")
-        .request()
-
-      await setTransaction(distributeTxResponse, provider);
-
-      // 4. sweep vex fee collector
-      const sellHoldingVexTxResponse = await provider.vendor.sign('tx', [ sellHoldingVexClause ])
-        .signer(address)
-        .dependsOn(distributeTxResponse.txid)
-        .comment("Sell holding vet response")
-        .request()
-
-      await setTransaction(sellHoldingVexTxResponse, provider);
-
-      // 5. sweep vex fee collector
-      const vexSweepTxResponse = await provider.vendor.sign('tx', [ vexSweepClause ])
-        .signer(address)
-        .dependsOn(sellHoldingVexTxResponse.txid)
-        .comment("Sell holding vet response")
-        .request()
-
-
-      await setTransaction(vexSweepTxResponse, provider);
+      await setTransaction(txResponse, provider);
       setUpdateBalances(true);
     } catch (error) {
-      throw new Error(error)
+      console.log(error)
     }
   }
 
