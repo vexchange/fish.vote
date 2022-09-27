@@ -177,48 +177,36 @@ const useAssets = () => {
 
   const recieveFunds = async () => {
     // ---------------------- Method ---------------------- //
-
-    // 1. sell into wvet
-    const sellHoldingWvetMethod = provider.thor.account(VEX_NETWORK.wvet_fee_collector.address).method(SELL_HOLDING_ABI);
-
-    // 2. sweep wvet fee collector
+    // 1. sweep wvet fee collector
     const wvetSweepMethod = provider.thor.account(VEX_NETWORK.wvet_fee_collector.address).method(SWEEP_DESIRED_ABI);
 
-    // 3. distribute
+    // 2. distribute
     const distributeMethod = provider.thor.account(VEX_NETWORK.distributor.address).method(DISTRIBUTE_ABI);
 
-    // 4. sweep vex fee collector
+    // 3. sweep vex fee collector
     const vexSweepMethod = provider.thor.account(VEX_NETWORK.vex_fee_collector.address).method(SWEEP_DESIRED_ABI);
 
-    // 5. sell into vex
-    const sellHoldingVexMethod = provider.thor.account(VEX_NETWORK.vex_fee_collector.address).method(SELL_HOLDING_ABI);
+    // 4. sell into vex
+    const sellHoldingVexMethod = provider.thor.account(VEX_NETWORK.wvet.address).method(SELL_HOLDING_ABI);
 
     // ---------------------- Clauses ---------------------- //
-
-    // 1. sell into wvet
-    const assetsToWVET = VEX_NETWORK.wvet_fee_collector.displayed_assests.map(token => {
-      return sellHoldingWvetMethod.asClause(token.address);
-    });
-
-    // 2. sweep wvet fee collector
+    // 1. sweep wvet fee collector
     const wvetSweepClause = wvetSweepMethod.asClause();
 
-    // 3. distribute
+    // 2. distribute
     const distributeClause = distributeMethod.asClause();
 
-    // 4. sell into vex
+    // 3. sell into vex
     const assetsToVEX = VEX_NETWORK.vex_fee_collector.displayed_assests.map(token => {
       return sellHoldingVexMethod.asClause(token.address);
     })
 
-    // 5. sweep vex fee collector
+    // 4. sweep vex fee collector
     const vexSweepClause = vexSweepMethod.asClause();
 
     // ---------------------- Responses ---------------------- //
     try {
-      // 1. sell into wvet
       const txResponse = await provider.vendor.sign('tx', [
-        ...assetsToWVET,
         wvetSweepClause,
         distributeClause,
         ...assetsToVEX,
