@@ -16,7 +16,7 @@ import FeeCollector from "@components/FeeCollector";
 import Block, { Col } from "@components/Block";
 
 export default function Assets() {
-  const { address, tick, unlock } = vechain.useContainer();
+  const { address, unlock } = vechain.useContainer();
 
   const {
     state,
@@ -122,7 +122,11 @@ export default function Assets() {
             title="Timelock"
             special
             footer={
-              <Button onClick={handleOnClick}>Receive Funds</Button>
+              address ? (
+                <Button onClick={handleOnClick}>Receive Funds</Button>
+              ) : (
+                <Button onClick={unlock}>Connect wallet</Button>
+              )
             }
           >
             {state.timelock.isLoading ? (
