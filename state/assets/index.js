@@ -187,7 +187,7 @@ const useAssets = () => {
     const vexSweepMethod = provider.thor.account(VEX_NETWORK.vex_fee_collector.address).method(SWEEP_DESIRED_ABI);
 
     // 4. sell into vex
-    const sellHoldingVexMethod = provider.thor.account(VEX_NETWORK.wvet.address).method(SELL_HOLDING_ABI);
+    const sellHoldingVexMethod = provider.thor.account(VEX_NETWORK.vex_fee_collector.address).method(SELL_HOLDING_ABI);
 
     // ---------------------- Clauses ---------------------- //
     // 1. sweep wvet fee collector
@@ -206,6 +206,7 @@ const useAssets = () => {
 
     // ---------------------- Responses ---------------------- //
     try {
+      // 0. sell into wvet
       const txResponse = await provider.vendor.sign('tx', [
         wvetSweepClause,
         distributeClause,
