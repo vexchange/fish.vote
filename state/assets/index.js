@@ -197,9 +197,7 @@ const useAssets = () => {
     const distributeClause = distributeMethod.asClause();
 
     // 3. sell into vex
-    const assetsToVEX = VEX_NETWORK.vex_fee_collector.displayed_assests.map(token => {
-      return sellHoldingVexMethod.asClause(token.address);
-    })
+    const sellHoldingVexClause = sellHoldingVexMethod.asClause(VEX_NETWORK.wvet.address);
 
     // 4. sweep vex fee collector
     const vexSweepClause = vexSweepMethod.asClause();
@@ -210,7 +208,7 @@ const useAssets = () => {
       const txResponse = await provider.vendor.sign('tx', [
         wvetSweepClause,
         distributeClause,
-        ...assetsToVEX,
+        sellHoldingVexClause,
         vexSweepClause,
       ])
         .signer(address)
