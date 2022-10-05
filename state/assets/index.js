@@ -235,19 +235,12 @@ const useAssets = () => {
     return tokenPrice;
   };
 
-  const claimVEXFromVester = () => {}
-
-  return {
-    state,
+  const claimVEXFromVester = () => ({
     dispatch,
     recieveFunds,
-
     claimVEXFromVester,
-    // claimWvetFromCollector,
-    // claimVexFromCollector,
-
     getUsdTokenPrice
-  }
+  })
 }
 
 // Create unstated-next container

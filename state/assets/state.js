@@ -95,10 +95,6 @@ export const reducer = (state, action) => {
       }
     }
 
-  // GET_DISTRIBUTOR_BALANCES: 'distributor_balances',
-  // GET_DISTRIBUTOR_BALANCES_SUCCESS: 'distributor_balances_success',
-  // GET_DISTRIBUTOR_BALANCES_ERROR: 'distributor_balances_error',
-
     case ACTIONS.GET_DISTRIBUTOR_BALANCES: {
       return {
         ...state,
