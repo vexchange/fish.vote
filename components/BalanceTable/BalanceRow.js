@@ -1,5 +1,5 @@
 import { React, useEffect, useState } from "react";
-import { formatDollarAmount, formatNumber, formatSmallNumber } from "@utils/functions";
+import { formatDollarAmount, formatNumber } from "@utils/functions";
 import AddressLink from "../AddressLink";
 import assets from "@state/assets";
 import tokenInfo from "@state/tokenInfo";
@@ -22,9 +22,6 @@ const BalanceRow = ({ balance, address, name }) => {
     }
   }, [pairs, tokens, address])
 
-  const isNumber = isNaN(formatNumber(balance, format))
-  const isDollarAmount = isNaN(formatDollarAmount(balance * usdTokenPrice, format))
-
   return (
     <>
       <tr key={address}>
@@ -33,15 +30,10 @@ const BalanceRow = ({ balance, address, name }) => {
         </td>
         <td data-label="Name">{name}</td>
         <td type="num" align="center" data-label="Amount">
-          {!isNumber ? formatNumber(balance, format) : balance }
+          {formatNumber(balance, format)}
         </td>
         <td type="num" align="right" data-label="USD Value">
-          { usdTokenPrice
-            ? !isDollarAmount 
-              ? formatDollarAmount(balance * usdTokenPrice, format)
-              : "N/A"
-            : null
-          }
+          { usdTokenPrice ? formatDollarAmount(balance * usdTokenPrice, format) : null}
         </td>
       </tr>
     </>

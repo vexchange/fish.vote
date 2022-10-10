@@ -37,8 +37,6 @@ export default function Assets() {
     recieveFunds()
   }
 
-  console.log(state.distributor)
-
   return (
     <Layout short>
       {/* Path switch */}
