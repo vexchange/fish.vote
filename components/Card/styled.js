@@ -133,6 +133,10 @@ export const Content = styled.div`
   p {
     color: white;
   }
+
+  code {
+    white-space: normal;
+  }
 `
 
 export const Footer = styled.div`
