@@ -23,7 +23,7 @@ const vex_wvet = {
 // Declare constants by network
 const VEX_CONSTANTS = {
   mainnet: {
-    node_url: "https://jp.mainnet-node.vexchange.io/",
+    node_url: "https://mainnet.veblocks.net",
     explorer_base_url: "https://explore.vechain.org/",
     governor_alpha: {
       name: "Governor",
