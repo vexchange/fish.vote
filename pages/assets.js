@@ -21,7 +21,7 @@ export default function Assets() {
   const {
     state,
     claimVEXFromVester,
-    recieveFunds,
+    receiveFunds,
   } = assets.useContainer();
 
   const handleClaimVEXFromVester = async () => {
@@ -34,7 +34,7 @@ export default function Assets() {
   }
 
   const handleOnClick = () => {
-    recieveFunds()
+    receiveFunds()
   }
 
   return (
