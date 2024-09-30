@@ -89,7 +89,7 @@ const useAssets = () => {
       let claimableAmount
 
       if (currentBlockTimestamp >= vestingEnd) {
-        claimableAmount = vexBalance;
+        claimableAmount = balance;
       } else {
         const rawAmount = ethers.BigNumber.from(vestingAmount).mul(currentBlockTimestamp - lastUpdate).div(vestingEnd - vestingBegin);
         claimableAmount = utils.formatUnits(rawAmount.toString());;
@@ -175,7 +175,7 @@ const useAssets = () => {
 
   }, [provider, updateBalances]);
 
-  const recieveFunds = async () => {
+  const receiveFunds = async () => {
     // ---------------------- Method ---------------------- //
     // 1. sweep wvet fee collector
     const wvetSweepMethod = provider.thor.account(VEX_NETWORK.wvet_fee_collector.address).method(SWEEP_DESIRED_ABI);
@@ -240,7 +240,7 @@ const useAssets = () => {
   return {
     state,
     dispatch,
-    recieveFunds,
+    receiveFunds,
     claimVEXFromVester,
     getUsdTokenPrice
   }
