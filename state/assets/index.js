@@ -29,7 +29,7 @@ const useAssets = () => {
     const getTimelockBalances = () => {
       dispatch({ type: ACTIONS.GET_TIMELOCK_BALANCES });
 
-      const balancePromises = VEX_NETWORK.timelock.displayed_assests.map(async token => {
+      const balancePromises = VEX_NETWORK.timelock.displayed_assets.map(async token => {
         const balanceOfMethod = provider.thor.account(token.address).method(balanceOfABI);
         const { decoded } = await balanceOfMethod.call(VEX_NETWORK.timelock.address);
 
@@ -49,7 +49,7 @@ const useAssets = () => {
     const getDistributor = () => {
       dispatch({ type: ACTIONS.GET_DISTRIBUTOR_BALANCES });
 
-      const balancePromises = VEX_NETWORK.distributor.displayed_assests.map(async token => {
+      const balancePromises = VEX_NETWORK.distributor.displayed_assets.map(async token => {
         const balanceOfMethod = provider.thor.account(token.address).method(balanceOfABI);
         const { decoded } = await balanceOfMethod.call(VEX_NETWORK.distributor.address);
 
@@ -89,7 +89,7 @@ const useAssets = () => {
       let claimableAmount
 
       if (currentBlockTimestamp >= vestingEnd) {
-        claimableAmount = vexBalance;
+        claimableAmount = balance;
       } else {
         const rawAmount = ethers.BigNumber.from(vestingAmount).mul(currentBlockTimestamp - lastUpdate).div(vestingEnd - vestingBegin);
         claimableAmount = utils.formatUnits(rawAmount.toString());;
@@ -109,7 +109,7 @@ const useAssets = () => {
     const getVexFeeCollector = async () => {
       dispatch({ type: ACTIONS.GET_VEX_BALANCES });
 
-      const balancePromises = VEX_NETWORK.vex_fee_collector.displayed_assests.map(async token => {
+      const balancePromises = VEX_NETWORK.vex_fee_collector.displayed_assets.map(async token => {
         const balanceOfMethod = provider.thor.account(token.address).method(balanceOfABI);
         const { decoded } = await balanceOfMethod.call(VEX_NETWORK.vex_fee_collector.address);
 
@@ -128,7 +128,7 @@ const useAssets = () => {
     const getWvetFeeCollector = async () => {
       dispatch({ type: ACTIONS.GET_WVET_BALANCES });
 
-      const balancePromises = VEX_NETWORK.wvet_fee_collector.displayed_assests.map(async token => {
+      const balancePromises = VEX_NETWORK.wvet_fee_collector.displayed_assets.map(async token => {
         const balanceOfMethod = provider.thor.account(token.address).method(balanceOfABI);
         const { decoded } = await balanceOfMethod.call(VEX_NETWORK.wvet_fee_collector.address);
 
@@ -175,7 +175,7 @@ const useAssets = () => {
 
   }, [provider, updateBalances]);
 
-  const recieveFunds = async () => {
+  const receiveFunds = async () => {
     // ---------------------- Method ---------------------- //
     // 1. sweep wvet fee collector
     const wvetSweepMethod = provider.thor.account(VEX_NETWORK.wvet_fee_collector.address).method(SWEEP_DESIRED_ABI);
@@ -240,7 +240,7 @@ const useAssets = () => {
   return {
     state,
     dispatch,
-    recieveFunds,
+    receiveFunds,
     claimVEXFromVester,
     getUsdTokenPrice
   }

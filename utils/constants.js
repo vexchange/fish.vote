@@ -32,7 +32,7 @@ const VEX_CONSTANTS = {
     distributor: {
       name: "Distributor",
       address: "0x72ee1c849b7353ad1452e56af136e4b0ff68a07e",
-      displayed_assests: [wvet]
+      displayed_assets: [wvet]
     },
     vex_governance_token,
     vex_wvet,
@@ -40,7 +40,7 @@ const VEX_CONSTANTS = {
     timelock: {
       name: "Timelock",
       address: "0x41D293Ee2924FF67Bd934fC092Be408162448f86",
-      displayed_assests: [wvet, vex_governance_token, vex_wvet]
+      displayed_assets: [wvet, vex_governance_token, vex_wvet]
     },
     factory: {
       name: "VexchangeV2Factory",
@@ -57,12 +57,12 @@ const VEX_CONSTANTS = {
     wvet_fee_collector: {
       name: "WVETFeeCollector",
       address: "0xc2ccf0af1b34367b639d0fd7bb4335da12bcc798",
-      displayed_assests: [wvet]
+      displayed_assets: [wvet]
     },
     vex_fee_collector: {
       name: "VEXFeeCollector",
       address: "0x10445a86645838306194c07f81ebd00bb7b82598",
-      displayed_assests: [wvet, vex_governance_token]
+      displayed_assets: [wvet, vex_governance_token]
     },
   },
   testnet: {
